@@ -150,6 +150,83 @@ namespace DynamicDamageReductionforBosses.Systems
                 ActiveFights.Remove(key);
         }
 
+        public override void PostSetupContent()
+        {
+            RegisterCalamityBosses();
+        }
+
+        /// <summary>
+        /// 在 PostSetupContent 里动态注册灾厄 Boss 的 NPC 类型映射。
+        /// 灾厄 NPC 的 Type ID 是运行时确定的，不能用常量，必须在此处查询。
+        /// </summary>
+        private static void RegisterCalamityBosses()
+        {
+            if (!ModLoader.TryGetMod("CalamityMod", out _)) return;
+
+            void TryAdd(string className, string key)
+            {
+                if (ModContent.TryFind<ModNPC>($"CalamityMod/{className}", out var npc))
+                    NpcTypeToFightKey[npc.Type] = key;
+            }
+
+            // ── 困难模式前 ───────────────────────────────────────────
+            TryAdd("DesertScourgeHead",        "DesertScourge");
+            TryAdd("DesertScourgeBody",        "DesertScourge");
+            TryAdd("DesertScourgeTail",        "DesertScourge");
+            TryAdd("Crabulon",                 "Crabulon");
+            TryAdd("HiveMind",                 "HiveMind");
+            TryAdd("PerforatorHive",           "Perforators");
+            TryAdd("PerforatorHeadLarge",      "Perforators");
+            TryAdd("PerforatorHeadMedium",     "Perforators");
+            TryAdd("PerforatorHeadSmall",      "Perforators");
+            TryAdd("SlimeGodCore",             "SlimeGod");
+            TryAdd("CrimulanPaladin",          "SlimeGod");
+            TryAdd("EbonianPaladin",           "SlimeGod");
+            TryAdd("SplitCrimulanPaladin",     "SlimeGod");
+            TryAdd("SplitEbonianPaladin",      "SlimeGod");
+
+            // ── 困难模式 ─────────────────────────────────────────────
+            TryAdd("Cryogen",                  "Cryogen");
+            TryAdd("AquaticScourgeHead",       "AquaticScourge");
+            TryAdd("AquaticScourgeBody",       "AquaticScourge");
+            TryAdd("AquaticScourgeBodyAlt",    "AquaticScourge");
+            TryAdd("AquaticScourgeTail",       "AquaticScourge");
+            TryAdd("BrimstoneElemental",       "BrimstoneElemental");
+            TryAdd("CalamitasClone",           "CalamitasClone");
+            TryAdd("Leviathan",                "Leviathan");
+            TryAdd("Anahita",                  "Leviathan");
+            TryAdd("AstrumAureus",             "AstrumAureus");
+            TryAdd("PlaguebringerGoliath",     "PlaguebringerGoliath");
+            TryAdd("RavagerHead",              "Ravager");
+            TryAdd("AstrumDeusHead",           "AstrumDeus");
+            TryAdd("AstrumDeusBody",           "AstrumDeus");
+            TryAdd("AstrumDeusTail",           "AstrumDeus");
+
+            // ── 月亮领主后 ───────────────────────────────────────────
+            TryAdd("ProfanedGuardianCommander","ProfanedGuardians");
+            TryAdd("ProfanedGuardianDefender", "ProfanedGuardians");
+            TryAdd("ProfanedGuardianHealer",   "ProfanedGuardians");
+            TryAdd("Dragonfolly",              "Dragonfolly");
+            TryAdd("Providence",               "Providence");
+            TryAdd("StormWeaverHead",          "StormWeaver");
+            TryAdd("CeaselessVoid",            "CeaselessVoid");
+            TryAdd("Signus",                   "Signus");
+            TryAdd("Polterghast",              "Polterghast");
+            TryAdd("OldDuke",                  "OldDuke");
+            TryAdd("DevourerofGodsHead",       "DevourerofGods");
+            TryAdd("DevourerofGodsBody",       "DevourerofGods");
+            TryAdd("DevourerofGodsTail",       "DevourerofGods");
+            TryAdd("Yharon",                   "Yharon");
+            TryAdd("AresBody",                 "ExoMechs");
+            TryAdd("ThanatosHead",             "ExoMechs");
+            TryAdd("ThanatosBody1",            "ExoMechs");
+            TryAdd("ThanatosBody2",            "ExoMechs");
+            TryAdd("ThanatosTail",             "ExoMechs");
+            TryAdd("Apollo",                   "ExoMechs");
+            TryAdd("Artemis",                  "ExoMechs");
+            TryAdd("SupremeCalamitas",         "SupremeCalamitas");
+        }
+
         public override void OnWorldUnload()
         {
             ActiveFights.Clear();

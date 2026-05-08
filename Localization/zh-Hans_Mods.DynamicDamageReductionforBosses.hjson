@@ -11,8 +11,8 @@ Configs: {
 		}
 
 		Headers: {
-			Hardmode: 困难模式Boss
-			PreHardmode: 困难模式前Boss
+			Hardmode: 困难模式
+			PreHardmode: 困难模式前
 			General: 基本设置
 		}
 
@@ -101,7 +101,7 @@ Configs: {
 			Label: 曲线参数 (p)
 		}
 
-		DisplayName: Boss动态减伤配置
+		DisplayName: 原版Boss
 
 		Enabled: {
 			Label: 启用
@@ -126,6 +126,146 @@ Configs: {
 		EnableHpMultiplier: {
 			Label: 启用血量倍数
 			Tooltip: 开启后，选中的Boss生成时血量乘以指定倍数
+		}
+	}
+
+	DDRConfigCalamity: {
+		DisplayName: 灾厄Boss
+
+		Headers: {
+			PreHardmode: 困难模式前
+			Hardmode: 困难模式
+			PostMoonLord: 月亮领主后
+		}
+
+		DesertScourge: {
+			Label: 荒漠灾虫
+			Tooltip: ""
+		}
+
+		Crabulon: {
+			Label: 菌生蟹
+			Tooltip: ""
+		}
+
+		HiveMind: {
+			Label: 腐巢意志
+			Tooltip: ""
+		}
+
+		Perforators: {
+			Label: 血肉宿主
+			Tooltip: ""
+		}
+
+		SlimeGod: {
+			Label: 史莱姆之神
+			Tooltip: ""
+		}
+
+		Cryogen: {
+			Label: 极地之灵
+			Tooltip: ""
+		}
+
+		AquaticScourge: {
+			Label: 渊海灾虫
+			Tooltip: ""
+		}
+
+		BrimstoneElemental: {
+			Label: 硫磺火元素
+			Tooltip: ""
+		}
+
+		CalamitasClone: {
+			Label: 灾厄之影
+			Tooltip: ""
+		}
+
+		Leviathan: {
+			Label: 利维坦和阿娜希塔
+			Tooltip: ""
+		}
+
+		AstrumAureus: {
+			Label: 白金星舰
+			Tooltip: ""
+		}
+
+		PlaguebringerGoliath: {
+			Label: 瘟疫使者歌莉娅
+			Tooltip: ""
+		}
+
+		Ravager: {
+			Label: 毁灭魔像
+			Tooltip: ""
+		}
+
+		AstrumDeus: {
+			Label: 星神游龙
+			Tooltip: ""
+		}
+
+		ProfanedGuardians: {
+			Label: 亵渎守卫
+			Tooltip: ""
+		}
+
+		Dragonfolly: {
+			Label: 痴愚金龙
+			Tooltip: ""
+		}
+
+		Providence: {
+			Label: 亵渎天神，普罗维登斯
+			Tooltip: ""
+		}
+
+		StormWeaver: {
+			Label: 风暴编织者
+			Tooltip: ""
+		}
+
+		CeaselessVoid: {
+			Label: 无尽虚空
+			Tooltip: ""
+		}
+
+		Signus: {
+			Label: 神之使徒，西格纳斯
+			Tooltip: ""
+		}
+
+		Polterghast: {
+			Label: 噬魂幽花
+			Tooltip: ""
+		}
+
+		OldDuke: {
+			Label: 硫海遗爵
+			Tooltip: ""
+		}
+
+		DevourerofGods: {
+			Label: 神明吞噬者
+			Tooltip: ""
+		}
+
+		Yharon: {
+			Label: 重生之龙，犽戎
+			Tooltip: ""
+		}
+
+		ExoMechs: {
+			Label: 星流巨械
+			Tooltip: ""
+		}
+
+		SupremeCalamitas: {
+			Label: 至尊女巫，灾厄
+			Tooltip: ""
 		}
 	}
 }

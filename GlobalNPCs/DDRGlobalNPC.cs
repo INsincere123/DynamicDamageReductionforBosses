@@ -4,6 +4,7 @@ using DynamicDamageReductionforBosses.Systems;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Config;
 
 namespace DynamicDamageReductionforBosses.GlobalNPCs
 {
@@ -108,27 +109,67 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
             return (int)(initialHP * MathF.Pow(inner, 1f / p));
         }
 
-        private static bool IsBossSelected(string key, DDRConfig cfg) => key switch
+        private static bool IsBossSelected(string key, DDRConfig cfg)
         {
-            "KingSlime"      => cfg.KingSlime,
-            "EyeOfCthulhu"   => cfg.EyeOfCthulhu,
-            "EaterOfWorlds"  => cfg.EaterOfWorlds,
-            "BrainOfCthulhu" => cfg.BrainOfCthulhu,
-            "QueenBee"       => cfg.QueenBee,
-            "Skeletron"      => cfg.Skeletron,
-            "Deerclops"      => cfg.Deerclops,
-            "WallOfFlesh"    => cfg.WallOfFlesh,
-            "QueenSlime"     => cfg.QueenSlime,
-            "TheTwins"       => cfg.TheTwins,
-            "TheDestroyer"   => cfg.TheDestroyer,
-            "SkeletronPrime" => cfg.SkeletronPrime,
-            "Plantera"       => cfg.Plantera,
-            "Golem"          => cfg.Golem,
-            "DukeFishron"    => cfg.DukeFishron,
-            "EmpressOfLight" => cfg.EmpressOfLight,
-            "LunaticCultist" => cfg.LunaticCultist,
-            "MoonLord"       => cfg.MoonLord,
-            _                => false,
-        };
+            // ── 原版 Boss ─────────────────────────────────────────────
+            bool vanilla = key switch
+            {
+                "KingSlime"      => cfg.KingSlime,
+                "EyeOfCthulhu"   => cfg.EyeOfCthulhu,
+                "EaterOfWorlds"  => cfg.EaterOfWorlds,
+                "BrainOfCthulhu" => cfg.BrainOfCthulhu,
+                "QueenBee"       => cfg.QueenBee,
+                "Skeletron"      => cfg.Skeletron,
+                "Deerclops"      => cfg.Deerclops,
+                "WallOfFlesh"    => cfg.WallOfFlesh,
+                "QueenSlime"     => cfg.QueenSlime,
+                "TheTwins"       => cfg.TheTwins,
+                "TheDestroyer"   => cfg.TheDestroyer,
+                "SkeletronPrime" => cfg.SkeletronPrime,
+                "Plantera"       => cfg.Plantera,
+                "Golem"          => cfg.Golem,
+                "DukeFishron"    => cfg.DukeFishron,
+                "EmpressOfLight" => cfg.EmpressOfLight,
+                "LunaticCultist" => cfg.LunaticCultist,
+                "MoonLord"       => cfg.MoonLord,
+                _                => false,
+            };
+            if (vanilla) return true;
+
+            // ── 灾厄 Boss（仅在灾厄 Config 加载时生效）─────────────────
+            var cal = ModContent.GetInstance<DDRConfigCalamity>();
+            if (cal == null) return false;
+
+            return key switch
+            {
+                "DesertScourge"        => cal.DesertScourge,
+                "Crabulon"             => cal.Crabulon,
+                "HiveMind"             => cal.HiveMind,
+                "Perforators"          => cal.Perforators,
+                "SlimeGod"             => cal.SlimeGod,
+                "Cryogen"              => cal.Cryogen,
+                "AquaticScourge"       => cal.AquaticScourge,
+                "BrimstoneElemental"   => cal.BrimstoneElemental,
+                "CalamitasClone"       => cal.CalamitasClone,
+                "Leviathan"            => cal.Leviathan,
+                "AstrumAureus"         => cal.AstrumAureus,
+                "PlaguebringerGoliath" => cal.PlaguebringerGoliath,
+                "Ravager"              => cal.Ravager,
+                "AstrumDeus"           => cal.AstrumDeus,
+                "ProfanedGuardians"    => cal.ProfanedGuardians,
+                "Dragonfolly"          => cal.Dragonfolly,
+                "Providence"           => cal.Providence,
+                "StormWeaver"          => cal.StormWeaver,
+                "CeaselessVoid"        => cal.CeaselessVoid,
+                "Signus"               => cal.Signus,
+                "Polterghast"          => cal.Polterghast,
+                "OldDuke"              => cal.OldDuke,
+                "DevourerofGods"       => cal.DevourerofGods,
+                "Yharon"               => cal.Yharon,
+                "ExoMechs"             => cal.ExoMechs,
+                "SupremeCalamitas"     => cal.SupremeCalamitas,
+                _                      => false,
+            };
+        }
     }
 }

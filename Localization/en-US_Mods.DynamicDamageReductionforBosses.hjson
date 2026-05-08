@@ -128,4 +128,144 @@ Configs: {
 			Tooltip: ""
 		}
 	}
+
+	DDRConfigCalamity: {
+		DisplayName: DDR Calamity Config
+
+		Headers: {
+			PreHardmode: Pre Hardmode Header
+			Hardmode: Hardmode Header
+			PostMoonLord: Post Moon Lord Header
+		}
+
+		DesertScourge: {
+			Label: Desert Scourge
+			Tooltip: ""
+		}
+
+		Crabulon: {
+			Label: Crabulon
+			Tooltip: ""
+		}
+
+		HiveMind: {
+			Label: Hive Mind
+			Tooltip: ""
+		}
+
+		Perforators: {
+			Label: Perforators
+			Tooltip: ""
+		}
+
+		SlimeGod: {
+			Label: Slime God
+			Tooltip: ""
+		}
+
+		Cryogen: {
+			Label: Cryogen
+			Tooltip: ""
+		}
+
+		AquaticScourge: {
+			Label: Aquatic Scourge
+			Tooltip: ""
+		}
+
+		BrimstoneElemental: {
+			Label: Brimstone Elemental
+			Tooltip: ""
+		}
+
+		CalamitasClone: {
+			Label: Calamitas Clone
+			Tooltip: ""
+		}
+
+		Leviathan: {
+			Label: Leviathan
+			Tooltip: ""
+		}
+
+		AstrumAureus: {
+			Label: Astrum Aureus
+			Tooltip: ""
+		}
+
+		PlaguebringerGoliath: {
+			Label: Plaguebringer Goliath
+			Tooltip: ""
+		}
+
+		Ravager: {
+			Label: Ravager
+			Tooltip: ""
+		}
+
+		AstrumDeus: {
+			Label: Astrum Deus
+			Tooltip: ""
+		}
+
+		ProfanedGuardians: {
+			Label: Profaned Guardians
+			Tooltip: ""
+		}
+
+		Dragonfolly: {
+			Label: Dragonfolly
+			Tooltip: ""
+		}
+
+		Providence: {
+			Label: Providence
+			Tooltip: ""
+		}
+
+		StormWeaver: {
+			Label: Storm Weaver
+			Tooltip: ""
+		}
+
+		CeaselessVoid: {
+			Label: Ceaseless Void
+			Tooltip: ""
+		}
+
+		Signus: {
+			Label: Signus
+			Tooltip: ""
+		}
+
+		Polterghast: {
+			Label: Polterghast
+			Tooltip: ""
+		}
+
+		OldDuke: {
+			Label: Old Duke
+			Tooltip: ""
+		}
+
+		DevourerofGods: {
+			Label: Devourerof Gods
+			Tooltip: ""
+		}
+
+		Yharon: {
+			Label: Yharon
+			Tooltip: ""
+		}
+
+		ExoMechs: {
+			Label: Exo Mechs
+			Tooltip: ""
+		}
+
+		SupremeCalamitas: {
+			Label: Supreme Calamitas
+			Tooltip: ""
+		}
+	}
 }
