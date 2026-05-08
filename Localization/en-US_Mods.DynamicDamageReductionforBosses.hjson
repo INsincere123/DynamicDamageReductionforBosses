@@ -1,0 +1,131 @@
+Configs: {
+	DDRConfig: {
+		MoonLord: {
+			Tooltip: ""
+			Label: Moon Lord
+		}
+
+		LunaticCultist: {
+			Tooltip: ""
+			Label: Lunatic Cultist
+		}
+
+		Headers: {
+			Hardmode: Hardmode Header
+			PreHardmode: Pre Hardmode Header
+			General: General Header
+		}
+
+		EmpressOfLight: {
+			Tooltip: ""
+			Label: Empress Of Light
+		}
+
+		DukeFishron: {
+			Tooltip: ""
+			Label: Duke Fishron
+		}
+
+		Golem: {
+			Tooltip: ""
+			Label: Golem
+		}
+
+		Plantera: {
+			Tooltip: ""
+			Label: Plantera
+		}
+
+		SkeletronPrime: {
+			Tooltip: ""
+			Label: Skeletron Prime
+		}
+
+		Skeletron: {
+			Tooltip: ""
+			Label: Skeletron
+		}
+
+		TheDestroyer: {
+			Tooltip: ""
+			Label: The Destroyer
+		}
+
+		TheTwins: {
+			Tooltip: ""
+			Label: The Twins
+		}
+
+		QueenSlime: {
+			Tooltip: ""
+			Label: Queen Slime
+		}
+
+		WallOfFlesh: {
+			Tooltip: ""
+			Label: Wall Of Flesh
+		}
+
+		Deerclops: {
+			Tooltip: ""
+			Label: Deerclops
+		}
+
+		QueenBee: {
+			Tooltip: ""
+			Label: Queen Bee
+		}
+
+		BrainOfCthulhu: {
+			Tooltip: ""
+			Label: Brain Of Cthulhu
+		}
+
+		EaterOfWorlds: {
+			Tooltip: ""
+			Label: Eater Of Worlds
+		}
+
+		EyeOfCthulhu: {
+			Tooltip: ""
+			Label: Eye Of Cthulhu
+		}
+
+		KingSlime: {
+			Tooltip: ""
+			Label: King Slime
+		}
+
+		CurvePower: {
+			Tooltip: ""
+			Label: Curve Power
+		}
+
+		DisplayName: DDR Config
+
+		Enabled: {
+			Label: Enabled
+			Tooltip: ""
+		}
+
+		MinKillSeconds: {
+			Label: Min Kill Seconds
+			Tooltip: ""
+		}
+
+		HpMultiplier: {
+			Label: Hp Multiplier
+			Tooltip: ""
+		}
+
+		EnableDamageReduction: {
+			Label: Enable Damage Reduction
+			Tooltip: ""
+		}
+
+		EnableHpMultiplier: {
+			Label: Enable Hp Multiplier
+			Tooltip: ""
+		}
+	}
+}

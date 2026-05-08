@@ -1,0 +1,3 @@
+displayName = BOSS动态减伤
+author = Zelda
+version = 0.1

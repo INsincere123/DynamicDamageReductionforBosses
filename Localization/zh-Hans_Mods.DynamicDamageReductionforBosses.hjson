@@ -1,0 +1,131 @@
+Configs: {
+	DDRConfig: {
+		MoonLord: {
+			Tooltip: ""
+			Label: 月亮领主
+		}
+
+		LunaticCultist: {
+			Tooltip: ""
+			Label: 拜月教邪教徒
+		}
+
+		Headers: {
+			Hardmode: 困难模式Boss
+			PreHardmode: 困难模式前Boss
+			General: 基本设置
+		}
+
+		EmpressOfLight: {
+			Tooltip: ""
+			Label: 光之女皇
+		}
+
+		DukeFishron: {
+			Tooltip: ""
+			Label: 猪龙鱼公爵
+		}
+
+		Golem: {
+			Tooltip: ""
+			Label: 石巨人
+		}
+
+		Plantera: {
+			Tooltip: ""
+			Label: 世纪之花
+		}
+
+		SkeletronPrime: {
+			Tooltip: ""
+			Label: 机械骷髅王
+		}
+
+		Skeletron: {
+			Tooltip: ""
+			Label: 骷髅王
+		}
+
+		TheDestroyer: {
+			Tooltip: ""
+			Label: 毁灭者
+		}
+
+		TheTwins: {
+			Tooltip: ""
+			Label: 双子魔眼
+		}
+
+		QueenSlime: {
+			Tooltip: ""
+			Label: 史莱姆皇后
+		}
+
+		WallOfFlesh: {
+			Tooltip: ""
+			Label: 血肉墙
+		}
+
+		Deerclops: {
+			Tooltip: ""
+			Label: 独眼巨鹿
+		}
+
+		QueenBee: {
+			Tooltip: ""
+			Label: 蜂王
+		}
+
+		BrainOfCthulhu: {
+			Tooltip: ""
+			Label: 克苏鲁之脑
+		}
+
+		EaterOfWorlds: {
+			Tooltip: ""
+			Label: 世界吞噬者
+		}
+
+		EyeOfCthulhu: {
+			Tooltip: ""
+			Label: 克苏鲁之眼
+		}
+
+		KingSlime: {
+			Tooltip: ""
+			Label: 史莱姆王
+		}
+
+		CurvePower: {
+			Tooltip: 控制减伤曲线形状：p=1为线性（灾厄原版），p=2为四分之一圆弧（推荐），p越大保护越强
+			Label: 曲线参数 (p)
+		}
+
+		DisplayName: Boss动态减伤配置
+
+		Enabled: {
+			Label: 启用
+			Tooltip: ""
+		}
+
+		MinKillSeconds: {
+			Label: 最短击杀时间（秒）
+			Tooltip: Boss至少需要存活多少秒才能被击杀
+		}
+
+		HpMultiplier: {
+			Label: 血量倍数
+			Tooltip: 1=原版血量，2=双倍，10=十倍，上限10000
+		}
+
+		EnableDamageReduction: {
+			Label: 启用动态减伤
+			Tooltip: 开启后，选中的Boss不会早于"最短击杀时间"死亡
+		}
+
+		EnableHpMultiplier: {
+			Label: 启用血量倍数
+			Tooltip: 开启后，选中的Boss生成时血量乘以指定倍数
+		}
+	}
+}
