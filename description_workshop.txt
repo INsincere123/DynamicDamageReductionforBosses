@@ -1,1 +1,61 @@
-This description will show up on the steam page, check out https://steamcommunity.com/comment/Guide/formattinghelp.
+[h1]BOSS动态减伤 / Dynamic Boss Damage Reduction[/h1]
+
+[i]面向模组开发者和武器测试者的工具 Mod / A utility mod for mod developers and weapon testers[/i]
+
+[hr][/hr]
+
+[h2]🇨🇳 中文说明[/h2]
+
+[h3]用途[/h3]
+在用高伤害武器测试时，前期 Boss 往往被瞬间秒杀，完全无法观察战斗流程、收集数据。本 Mod 通过动态减伤机制，强制 Boss 至少存活设定的时间，让你完整经历整场战斗。
+
+[h3]功能[/h3]
+[list]
+[*] [b]最短击杀时间[/b]：滑条设置 Boss 至少存活多少秒，超时后伤害完全恢复
+[*] [b]平滑减伤曲线[/b]：基于双曲正切函数动态计算减伤，血量下降自然流畅，不会突然卡住
+[*] [b]保底伤害[/b]：无论减伤多强，每次攻击都至少造成原始伤害的指定比例，不会打出满屏 1
+[*] [b]多段 Boss 支持[/b]：月亮领主、机械骷髅王等多部位 Boss 各相位独立计时，相位切换不被拦截
+[*] [b]血量倍数[/b]：可将选中 Boss 的血量乘以指定倍数，适合长时间耐久测试
+[*] [b]无需物品[/b]：所有设置均在 Mod 配置界面完成
+[/list]
+
+[h3]兼容支持[/h3]
+[list]
+[*] 原版全部 Boss（20 个）
+[*] [b]灾厄 Mod[/b]（Calamity Mod）— 全部 Boss
+[*] [b]Fargo's Souls Mod[/b]（Fargowiltas 魂石）— 主线 Boss + 9 位英灵
+[*] [b]瑟银 Mod[/b]（Thorium Mod）— 全部 Boss 含迷你 Boss
+[/list]
+以上三个扩展 Mod 均为[b]可选依赖[/b]，未安装时对应配置项自动无效。
+
+[hr][/hr]
+
+[h2]🇬🇧 English[/h2]
+
+[h3]What it does[/h3]
+When testing weapons with high damage output, early-game bosses die in an instant — making it impossible to observe fight patterns or collect meaningful data. This mod applies a dynamic damage reduction system that forces bosses to survive for a configurable minimum duration.
+
+[h3]Features[/h3]
+[list]
+[*] [b]Minimum kill time[/b]: Set how many seconds each boss must survive. Damage is fully restored once the timer expires.
+[*] [b]Smooth reduction curve[/b]: Uses a tanh-based soft layer updated every frame, so HP drains naturally rather than suddenly stalling.
+[*] [b]Damage floor[/b]: No matter how strong the reduction, each hit always deals at least a configurable fraction of base damage — you'll never see walls of 1s.
+[*] [b]Multi-part boss support[/b]: Moon Lord, Skeletron Prime, and similar bosses have phase-aware timers. Phase transitions (hands/arms dying) are not blocked.
+[*] [b]HP multiplier[/b]: Multiply a boss's max HP by up to 10,000× for extended endurance testing.
+[*] [b]No items required[/b]: Everything is configured through the in-game Mod Config UI.
+[/list]
+
+[h3]Mod compatibility[/h3]
+[list]
+[*] All 20 vanilla bosses
+[*] [b]Calamity Mod[/b] — full boss roster
+[*] [b]Fargo's Souls Mod[/b] — main bosses + 9 champions
+[*] [b]Thorium Mod[/b] — all bosses including mini-bosses
+[/list]
+All three companion mods are [b]optional[/b]. If not installed, their config entries simply have no effect.
+
+[h3]Notes[/h3]
+[list]
+[*] Eater of Worlds segments are not hard-floored (splitting mechanics would break), but the soft reduction still applies.
+[*] This mod is intended for single-player testing sessions. Multiplayer behavior is untested.
+[/list]

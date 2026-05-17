@@ -1,0 +1,130 @@
+# BOSS动态减伤 / Dynamic Boss Damage Reduction
+
+> tModLoader 1.4 工具 Mod — 面向模组开发者和武器测试者  
+> A tModLoader 1.4 utility mod for mod developers and weapon testers
+
+---
+
+## 中文
+
+### 用途
+
+在测试高伤害武器时，前期 Boss 经常被瞬间秒杀，根本来不及观察战斗流程或收集数据。本 Mod 通过动态减伤系统，强制 Boss 至少存活设定的时间，让你完整经历整场战斗。
+
+### 使用方法
+
+1. 启用 Mod，进入游戏
+2. 打开 **设置 → Mod 配置**，找到对应配置页
+3. 勾选需要限制的 Boss，设置最短击杀时间
+4. 进入游戏正常战斗即可，无需任何物品
+
+### 配置参数
+
+| 参数 | 说明 |
+|------|------|
+| 启用动态减伤 | 总开关 |
+| 最短击杀时间（秒） | Boss 至少存活多少秒，超时后伤害完全恢复 |
+| 减伤强度 | 值越大，DPS 超标时减伤越猛烈（默认 2.0） |
+| 最低伤害比例 | 最低保留的伤害比例，防止打出满屏 1（默认 5%） |
+| 附属部位时间占比 | 多段 Boss 中，手/臂等附属部位占用时间的比例（默认 50%） |
+| 启用血量倍数 | 开启后，Boss 生成时血量乘以指定倍数 |
+
+### 支持的模组
+
+| 配置页 | 覆盖范围 |
+|--------|---------|
+| ① 原版 Boss | 所有 20 个原版 Boss |
+| ② 瑟银 Mod | Thorium Mod 全部 Boss（含迷你 Boss） |
+| ③ 灾厄 Boss | Calamity Mod 全部 Boss |
+| ④ Fargo's Souls | Fargo's Souls Mod 主线 Boss + 9 位英灵 |
+
+以上扩展 Mod 均为可选依赖，未安装时对应配置项自动无效。
+
+### 技术说明
+
+**减伤原理（双层结构）**
+
+- **软层**：每帧根据 Boss 当前血量与理想进度的偏差，用双曲正切函数平滑更新减伤系数，血量下降自然流畅
+- **硬地板**：基于线性血量下限，防止极端爆发伤害穿透软层，致死 NPC 绝对不会早于最短击杀时间死亡
+
+**多段 Boss 两段式计时**
+
+含附属部位的 Boss（月亮领主、石巨人等）分两个阶段：
+- 第一阶段（前 α×T1 秒）：手/臂等非致死部位受保护
+- 第二阶段（后 (1-α)×T1 秒）：本体/核心受保护
+- 相位切换（如月亮领主手的脚本死亡）不被拦截
+
+**已知限制**
+
+- 世界吞噬者体节死亡会触发分裂，无法对其使用硬地板；软减伤仍然生效
+- 本 Mod 为单机测试工具，联机行为未经测试
+
+---
+
+## English
+
+### What it does
+
+When testing high-damage weapons, early-game bosses die instantly — making it impossible to observe fight patterns or collect useful data. This mod forces bosses to survive for a configurable minimum duration using a dynamic damage reduction system.
+
+### How to use
+
+1. Enable the mod and launch the game
+2. Go to **Settings → Mod Configuration** and find the config pages
+3. Check the bosses you want to limit and set the minimum kill time
+4. Play normally — no items or special setup required
+
+### Configuration
+
+| Option | Description |
+|--------|-------------|
+| Enable Damage Reduction | Master toggle |
+| Minimum Kill Time (s) | How long the boss must survive; damage fully restores after the timer |
+| Reduction Strength | Higher = stronger reduction when DPS exceeds target (default 2.0) |
+| Minimum Damage Ratio | Damage floor — each hit always deals at least this fraction of base damage (default 5%) |
+| Limb Phase Ratio | For multi-part bosses: fraction of the timer reserved for killing limbs (default 50%) |
+| Enable HP Multiplier | Multiply a boss's max HP on spawn |
+
+### Supported mods
+
+| Config page | Coverage |
+|-------------|---------|
+| ① Vanilla Bosses | All 20 vanilla bosses |
+| ② Thorium Mod | All Thorium bosses including mini-bosses |
+| ③ Calamity Bosses | Full Calamity Mod boss roster |
+| ④ Fargo's Souls | Fargo's Souls Mod main bosses + 9 champions |
+
+All companion mods are optional. If not installed, their config entries have no effect.
+
+### Technical notes
+
+**Two-layer reduction system**
+
+- **Soft layer**: Every frame, a smooth multiplier (`SmoothedN`) is updated via a tanh-based curve comparing current HP to the ideal drain schedule. This gives fluid, natural HP loss.
+- **Hard floor**: A linear HP floor prevents extreme burst damage from bypassing the soft layer. Kill-condition NPCs are guaranteed not to die before the minimum time.
+
+**Two-phase timer for multi-part bosses**
+
+Bosses with non-kill appendages (Moon Lord, Golem, etc.) use a two-phase system:
+- **Phase 1** (first α×T1 seconds): Limbs/appendages are protected
+- **Phase 2** (final (1-α)×T1 seconds): The main body/core is protected
+- Scripted phase transitions (e.g., Moon Lord hands dying) are not blocked
+
+**Known limitations**
+
+- Eater of Worlds segments trigger splitting on death; hard floors are not applied to them (would freeze the fight). Soft reduction still applies.
+- This mod is designed for single-player testing. Multiplayer behavior is untested.
+
+---
+
+## Build
+
+```
+dotnet build DynamicDamageReductionforBosses.csproj
+```
+
+Or use **Workshop → Develop Mods → Build & Reload** in-game.
+
+## License
+
+This project is open source. Feel free to use the damage reduction logic in your own mods with credit.

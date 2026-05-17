@@ -1,1 +1,23 @@
-Modify this file with a description of your mod.
+一款面向模组开发者和测试者的工具 Mod。
+
+在使用高伤害武器测试时，Boss 往往被瞬间秒杀，无法收集到有效数据。
+本 Mod 通过动态减伤机制，强制 Boss 至少存活指定时间，让你完整体验整场战斗。
+
+功能：
+· 设置每个 Boss 的最短存活时间（秒）
+· 动态计算减伤系数，血量下降曲线平滑自然
+· 无需物品，直接在 Mod 配置界面操作
+· 支持灾厄 Mod、Fargo's Souls Mod、瑟银 Mod
+
+---
+
+A developer/tester utility mod.
+
+When testing with high-damage weapons, bosses die instantly before you can gather useful data.
+This mod applies dynamic damage reduction to force bosses to survive for a minimum amount of time.
+
+Features:
+· Set a minimum kill time (in seconds) for each boss
+· Smooth damage reduction curve with soft and hard floor layers
+· No items required — configure everything in the Mod Config UI
+· Supports Calamity Mod, Fargo's Souls Mod, and Thorium Mod
