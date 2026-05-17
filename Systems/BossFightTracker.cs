@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DynamicDamageReductionforBosses.Config;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -7,13 +8,14 @@ using Terraria.ModLoader;
 namespace DynamicDamageReductionforBosses.Systems
 {
     /// <summary>
-    /// 记录各 Boss 战斗的计时器和初始 HP。
+    /// 追踪各 Boss 战斗状态，实现两段式时间预算控制。
     ///
     /// 设计要点：
-    ///  - 以"战斗 Key"（如 "MoonLord"）而非 NPC 类型或 whoAmI 为单位追踪。
-    ///  - 多部位 Boss 的所有部位共享同一个 BossFightState（同一 Key）。
-    ///  - 每个 NPC 部位第一次被命中时记录其初始 HP（使用 whoAmI 区分）。
-    ///  - PostUpdateEverything 每帧检测：若某 Key 下所有 NPC 都消失，则清除该战斗状态。
+    ///  - 以战斗 Key 为单位；多部位 Boss 共享同一 BossFightState。
+    ///  - 区分"致死 NPC"（击杀=战斗结束）和"非致死部位"（手/臂/拳头等）。
+    ///  - Phase 1：非致死部位受 α×T1 时间预算保护；SmoothedN 基于非致死部位血量。
+    ///  - Phase 2：致死 NPC 受 (1-α)×T1 时间预算保护；SmoothedN 基于致死 NPC 血量。
+    ///  - 单体 Boss（无非致死部位）：跳过 Phase 1，Phase 2 使用完整 T1。
     /// </summary>
     public class BossFightTracker : ModSystem
     {
@@ -21,18 +23,63 @@ namespace DynamicDamageReductionforBosses.Systems
 
         public class BossFightState
         {
-            /// <summary>战斗第一次命中时的 Main.GameUpdateCount。</summary>
+            /// <summary>战斗开始时的 Main.GameUpdateCount。</summary>
             public int StartTick;
 
-            /// <summary>whoAmI → 该 NPC 被首次命中时的 HP。</summary>
+            /// <summary>whoAmI → 该 NPC 首次记录时的 HP（RegisterSpawn 或兜底）。</summary>
             public readonly Dictionary<int, int> InitialHP = new();
+
+            /// <summary>非致死部位初始 HP 之和（仅 RegisterSpawn 时累加）。</summary>
+            public int NonKillTotalInitHP;
+
+            /// <summary>致死 NPC 初始 HP 之和（仅 RegisterSpawn 时累加）。</summary>
+            public int KillTotalInitHP;
+
+            /// <summary>是否存在非致死部位（决定是否启用两段制）。</summary>
+            public bool HasNonKillParts;
+
+            /// <summary>Phase 2 开始时的 GameUpdateCount；-1 表示 Phase 1 尚未结束。</summary>
+            public int Phase2StartTick = -1;
+
+            /// <summary>每帧更新的平滑减伤系数，由 PostUpdateEverything 维护。</summary>
+            public float SmoothedN = 1f;
         }
 
         /// <summary>fightKey → 战斗状态。</summary>
         public static readonly Dictionary<string, BossFightState> ActiveFights = new();
 
+        // ── 致死 NPC 集合 ─────────────────────────────────────────────
+        // 只有这些 NPC 的死亡才等同于"Boss 被击败"。
+        // 硬地板（SetMaxDamage + CheckDead）仅作用于此集合内的 NPC；
+        // 其余部位只受 SmoothedN 约束，可以自然死亡（脚本触发、相位切换等）。
+
+        public static readonly HashSet<int> KillNpcTypes = new()
+        {
+            // ── 困难模式前 ───────────────────────────────────────────
+            NPCID.KingSlime,
+            NPCID.EyeofCthulhu,
+            // EaterOfWorlds 不列入：头死=分裂，拦截会卡死战斗
+            NPCID.BrainofCthulhu,
+            NPCID.QueenBee,
+            NPCID.SkeletronHead,       // 骷髅头死亡=战斗结束；双手可以自然死亡
+            NPCID.Deerclops,
+            NPCID.WallofFlesh,
+            NPCID.WallofFleshEye,      // WoF 与眼共享击杀条件
+            // ── 困难模式 ────────────────────────────────────────────
+            NPCID.QueenSlimeBoss,
+            NPCID.Retinazer,           // 双子都是致死 NPC，两者均需死亡
+            NPCID.Spazmatism,
+            NPCID.TheDestroyer,        // 毁灭者头；体节可自然死亡
+            NPCID.SkeletronPrime,      // 机械骷髅头；四条手臂可自然死亡
+            NPCID.Plantera,
+            NPCID.Golem,               // 石巨人体；头/拳头可自然死亡
+            NPCID.DukeFishron,
+            NPCID.HallowBoss,
+            NPCID.CultistBoss,
+            NPCID.MoonLordCore,        // 月亮领主核心；手/头由脚本触发死亡，不拦截
+        };
+
         // ── NPC 类型 → 战斗 Key 映射 ─────────────────────────────────
-        // 同一 Boss 的所有部位映射到相同 Key，共享计时器。
 
         public static readonly Dictionary<int, string> NpcTypeToFightKey = new()
         {
@@ -77,10 +124,8 @@ namespace DynamicDamageReductionforBosses.Systems
         // ── 公开方法 ─────────────────────────────────────────────────
 
         /// <summary>
-        /// 在 Boss 生成时调用（OnSpawn）。
-        /// 若该 Key 下尚无战斗状态，则创建并开始计时。
-        /// 记录初始 HP = lifeMax（生成时满血）。
-        /// 多部位 Boss 的各部位各自调用，共享同一个 StartTick。
+        /// Boss 生成时调用。分别累加非致死和致死 NPC 的初始 HP。
+        /// 多部位 Boss 各部位各自调用，共享同一 StartTick。
         /// </summary>
         public static void RegisterSpawn(NPC npc)
         {
@@ -93,15 +138,23 @@ namespace DynamicDamageReductionforBosses.Systems
                 ActiveFights[key] = state;
             }
 
-            // 记录该部位的初始 HP（生成时为满血，用 lifeMax 更准确）
             if (!state.InitialHP.ContainsKey(npc.whoAmI))
+            {
                 state.InitialHP[npc.whoAmI] = npc.lifeMax;
+
+                if (KillNpcTypes.Contains(npc.type))
+                    state.KillTotalInitHP += npc.lifeMax;
+                else
+                {
+                    state.NonKillTotalInitHP += npc.lifeMax;
+                    state.HasNonKillParts = true;
+                }
+            }
         }
 
         /// <summary>
-        /// 在 NPC 被命中前调用（ModifyHitBy*），作为安全兜底。
-        /// 正常情况下生成时已注册；此处处理 OnSpawn 未能覆盖的边缘情况
-        /// （如世界吞噬怪分裂出的新段落）。
+        /// 命中时获取战斗状态，兼作兜底注册（分裂段、Config 晚于生成启用等边缘情况）。
+        /// 兜底注册不改动 HP 预算字段，避免统计失真。
         /// </summary>
         public static BossFightState GetFightState(NPC npc)
         {
@@ -110,44 +163,124 @@ namespace DynamicDamageReductionforBosses.Systems
 
             if (!ActiveFights.TryGetValue(key, out var state))
             {
-                // 兜底：OnSpawn 被错过（例如 Config 在 Boss 已存在时才启用）
                 state = new BossFightState { StartTick = (int)Main.GameUpdateCount };
                 ActiveFights[key] = state;
             }
 
-            // 兜底：若该部位未被记录初始 HP，用当前 HP 补录
             if (!state.InitialHP.ContainsKey(npc.whoAmI))
                 state.InitialHP[npc.whoAmI] = npc.life;
 
             return state;
         }
 
-        /// <summary>每帧清理已结束的战斗（所有相关 NPC 均不活跃）。</summary>
+        // ── 每帧更新 ─────────────────────────────────────────────────
+
         public override void PostUpdateEverything()
         {
             if (ActiveFights.Count == 0) return;
 
+            var config = ModContent.GetInstance<DDRConfig>();
             var toRemove = new List<string>();
+            const float dt = 1f / 60f;
 
             foreach (var (key, state) in ActiveFights)
             {
                 bool anyAlive = false;
-                foreach (int whoAmI in state.InitialHP.Keys)
+                int nonKillCurrentHP = 0;
+                int killCurrentHP = 0;
+                bool anyNonKillAlive = false;
+
+                foreach (var (whoAmI, _) in state.InitialHP)
                 {
                     if (whoAmI < 0 || whoAmI >= Main.maxNPCs) continue;
                     NPC npc = Main.npc[whoAmI];
-                    if (npc.active && NpcTypeToFightKey.ContainsKey(npc.type))
+                    if (!npc.active || !NpcTypeToFightKey.ContainsKey(npc.type)) continue;
+
+                    anyAlive = true;
+                    if (KillNpcTypes.Contains(npc.type))
+                        killCurrentHP += npc.life;
+                    else
                     {
-                        anyAlive = true;
-                        break;
+                        nonKillCurrentHP += npc.life;
+                        anyNonKillAlive = true;
                     }
                 }
+
                 if (!anyAlive)
+                {
                     toRemove.Add(key);
+                    continue;
+                }
+
+                if (config == null || !config.EnableDamageReduction)
+                {
+                    state.SmoothedN = 1f;
+                    continue;
+                }
+
+                float t2 = (Main.GameUpdateCount - state.StartTick) / 60f;
+                float t1 = config.MinKillSeconds;
+                float alpha = config.PhaseRatio;
+
+                // Phase 2 启动检测
+                if (state.Phase2StartTick < 0)
+                {
+                    // 单体/全致死 Boss 立即进入 Phase 2；有非致死部位的等待触发条件
+                    bool phase1Over = !state.HasNonKillParts
+                                   || !anyNonKillAlive
+                                   || t2 >= alpha * t1;
+                    if (phase1Over)
+                        state.Phase2StartTick = (int)Main.GameUpdateCount;
+                }
+
+                if (state.Phase2StartTick < 0)
+                {
+                    // ── Phase 1：基于非致死部位 HP 和 α×T1 时间预算 ─────────
+                    float T_phase1 = Math.Max(alpha * t1, 0.1f);
+                    float h = state.NonKillTotalInitHP > 0
+                        ? (float)nonKillCurrentHP / state.NonKillTotalInitHP
+                        : 0f;
+                    float q = Math.Max((T_phase1 - t2) / T_phase1, 0f);
+                    UpdateSmoothedN(ref state.SmoothedN, h, q, config, dt);
+                }
+                else
+                {
+                    // ── Phase 2：基于致死 NPC 血量和剩余时间预算 ──────────────
+                    // 单体 Boss（!HasNonKillParts）使用完整 T1；
+                    // 有非致死部位的 Boss 使用 (1-α)×T1。
+                    float phase2Duration = state.HasNonKillParts ? (1f - alpha) * t1 : t1;
+                    float phase2Elapsed  = (Main.GameUpdateCount - state.Phase2StartTick) / 60f;
+
+                    if (phase2Elapsed >= phase2Duration || t2 >= t1)
+                    {
+                        state.SmoothedN = 1f;
+                    }
+                    else
+                    {
+                        float h = state.KillTotalInitHP > 0
+                            ? (float)killCurrentHP / state.KillTotalInitHP
+                            : 0f;
+                        float q = (phase2Duration - phase2Elapsed) / phase2Duration;
+                        UpdateSmoothedN(ref state.SmoothedN, h, q, config, dt);
+                    }
+                }
             }
 
             foreach (string key in toRemove)
                 ActiveFights.Remove(key);
+        }
+
+        private static void UpdateSmoothedN(ref float smoothedN, float h, float q, DDRConfig config, float dt)
+        {
+            float deficit    = q > 0f ? Math.Max(0f, (q - h) / q) : 0f;
+            float timeFactor = 0.35f + 0.65f * (1f - q);
+            float danger     = MathF.Tanh(config.Sensitivity * deficit) * timeFactor;
+            float minN       = config.MinDamageRatio;
+            float targetN    = Math.Clamp(1f - (1f - minN) * danger, minN, 1f);
+            float tau        = targetN < smoothedN ? 0.12f : 0.35f;
+            float lerpFactor = 1f - MathF.Exp(-dt / tau);
+            smoothedN        = smoothedN + (targetN - smoothedN) * lerpFactor;
+            smoothedN        = Math.Clamp(smoothedN, minN, 1f);
         }
 
         public override void PostSetupContent()
@@ -225,6 +358,49 @@ namespace DynamicDamageReductionforBosses.Systems
             TryAdd("Apollo",                   "ExoMechs");
             TryAdd("Artemis",                  "ExoMechs");
             TryAdd("SupremeCalamitas",         "SupremeCalamitas");
+
+            // ── 灾厄致死 NPC 注册 ────────────────────────────────────
+            void TryAddKill(string className)
+            {
+                if (ModContent.TryFind<ModNPC>($"CalamityMod/{className}", out var npc))
+                    KillNpcTypes.Add(npc.Type);
+            }
+
+            // 困难模式前
+            TryAddKill("DesertScourgeHead");
+            TryAddKill("Crabulon");
+            TryAddKill("HiveMind");
+            TryAddKill("PerforatorHive");
+            TryAddKill("SlimeGodCore");
+            // 困难模式
+            TryAddKill("Cryogen");
+            TryAddKill("AquaticScourgeHead");
+            TryAddKill("BrimstoneElemental");
+            TryAddKill("CalamitasClone");
+            TryAddKill("Leviathan");
+            TryAddKill("Anahita");
+            TryAddKill("AstrumAureus");
+            TryAddKill("PlaguebringerGoliath");
+            TryAddKill("RavagerHead");
+            TryAddKill("AstrumDeusHead");
+            // 月亮领主后
+            TryAddKill("ProfanedGuardianCommander");
+            TryAddKill("ProfanedGuardianDefender");
+            TryAddKill("ProfanedGuardianHealer");
+            TryAddKill("Dragonfolly");
+            TryAddKill("Providence");
+            TryAddKill("StormWeaverHead");
+            TryAddKill("CeaselessVoid");
+            TryAddKill("Signus");
+            TryAddKill("Polterghast");
+            TryAddKill("OldDuke");
+            TryAddKill("DevourerofGodsHead");
+            TryAddKill("Yharon");
+            TryAddKill("AresBody");
+            TryAddKill("Apollo");
+            TryAddKill("Artemis");
+            TryAddKill("ThanatosHead");
+            TryAddKill("SupremeCalamitas");
         }
 
         public override void OnWorldUnload()
