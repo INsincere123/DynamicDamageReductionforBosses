@@ -273,4 +273,93 @@ Configs: {
 			Tooltip: ""
 		}
 	}
+
+	DDRConfigFargo: {
+		DisplayName: Fargo's Souls Boss
+
+		Headers: {
+			Bosses: 主线 Boss
+			Champions: 冠军 Boss
+		}
+
+		TrojanSquirrel: {
+			Label: 特洛伊松鼠
+			Tooltip: ""
+		}
+
+		BanishedBaron: {
+			Label: 流放男爵
+			Tooltip: ""
+		}
+
+		DeviBoss: {
+			Label: 恶魔
+			Tooltip: ""
+		}
+
+		CursedCoffin: {
+			Label: 诅咒棺材
+			Tooltip: ""
+		}
+
+		AbomBoss: {
+			Label: 憎恶
+			Tooltip: ""
+		}
+
+		LifeChallenger: {
+			Label: 生命挑战者
+			Tooltip: ""
+		}
+
+		MutantBoss: {
+			Label: 突变体
+			Tooltip: ""
+		}
+
+		CosmosChampion: {
+			Label: 宇宙冠军
+			Tooltip: ""
+		}
+
+		EarthChampion: {
+			Label: 大地冠军
+			Tooltip: ""
+		}
+
+		LifeChampion: {
+			Label: 生命冠军
+			Tooltip: ""
+		}
+
+		NatureChampion: {
+			Label: 自然冠军
+			Tooltip: ""
+		}
+
+		ShadowChampion: {
+			Label: 暗影冠军
+			Tooltip: ""
+		}
+
+		SpiritChampion: {
+			Label: 灵魂冠军
+			Tooltip: ""
+		}
+
+		TerraChampion: {
+			Label: 泰拉冠军
+			Tooltip: ""
+		}
+
+		TimberChampion: {
+			Label: 木材冠军
+			Tooltip: ""
+		}
+
+		WillChampion: {
+			Label: 意志冠军
+			Tooltip: ""
+		}
+	}
 }

@@ -273,4 +273,93 @@ Configs: {
 			Tooltip: ""
 		}
 	}
+
+	DDRConfigFargo: {
+		DisplayName: Fargo's Souls Bosses
+
+		Headers: {
+			Bosses: Bosses
+			Champions: Champions
+		}
+
+		TrojanSquirrel: {
+			Label: Trojan Squirrel
+			Tooltip: ""
+		}
+
+		BanishedBaron: {
+			Label: Banished Baron
+			Tooltip: ""
+		}
+
+		DeviBoss: {
+			Label: Deviantt
+			Tooltip: ""
+		}
+
+		CursedCoffin: {
+			Label: Cursed Coffin
+			Tooltip: ""
+		}
+
+		AbomBoss: {
+			Label: Abomination
+			Tooltip: ""
+		}
+
+		LifeChallenger: {
+			Label: Life Challenger
+			Tooltip: ""
+		}
+
+		MutantBoss: {
+			Label: Mutant
+			Tooltip: ""
+		}
+
+		CosmosChampion: {
+			Label: Cosmos Champion
+			Tooltip: ""
+		}
+
+		EarthChampion: {
+			Label: Earth Champion
+			Tooltip: ""
+		}
+
+		LifeChampion: {
+			Label: Life Champion
+			Tooltip: ""
+		}
+
+		NatureChampion: {
+			Label: Nature Champion
+			Tooltip: ""
+		}
+
+		ShadowChampion: {
+			Label: Shadow Champion
+			Tooltip: ""
+		}
+
+		SpiritChampion: {
+			Label: Spirit Champion
+			Tooltip: ""
+		}
+
+		TerraChampion: {
+			Label: Terra Champion
+			Tooltip: ""
+		}
+
+		TimberChampion: {
+			Label: Timber Champion
+			Tooltip: ""
+		}
+
+		WillChampion: {
+			Label: Will Champion
+			Tooltip: ""
+		}
+	}
 }
