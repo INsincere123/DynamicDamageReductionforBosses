@@ -10,7 +10,6 @@ namespace DynamicDamageReductionforBosses.Config
         // ── 功能开关 ──────────────────────────────────────────────────
         [Header("General")]
 
-        // 动态减伤开关：强制 Boss 不早于最短击杀时间死亡
         [DefaultValue(false)]
         public bool EnableDamageReduction { get; set; }
 
@@ -19,23 +18,35 @@ namespace DynamicDamageReductionforBosses.Config
         [DefaultValue(60f)]
         public float MinKillSeconds { get; set; }
 
+        // tanh 敏感度：值越大，DPS 超标时减伤越急剧
         [Range(0.5f, 5f)]
         [Increment(0.5f)]
         [DefaultValue(2f)]
-        public float CurvePower { get; set; }
+        public float Sensitivity { get; set; }
 
-        // 血量倍数开关：对选中 Boss 的最大血量乘以指定倍数
+        // 保底系数：无论超出多少，实际伤害最低保留该比例
+        [Range(0.01f, 0.5f)]
+        [Increment(0.01f)]
+        [DefaultValue(0.05f)]
+        public float MinDamageRatio { get; set; }
+
+        // 第一阶段时间占比（仅对含非致死部位的多段 Boss 生效）
+        // 示例：0.5 = 前 50% 时间用于击杀手/臂等非致死部位，后 50% 用于击杀核心/头
+        // 单体 Boss 或全为致死 NPC 的 Boss（双子等）忽略此项
+        [Range(0.1f, 0.9f)]
+        [Increment(0.05f)]
+        [DefaultValue(0.5f)]
+        public float PhaseRatio { get; set; }
+
         [DefaultValue(false)]
         public bool EnableHpMultiplier { get; set; }
 
-        // 血量倍数：1 = 原版，10 = 十倍血量，上限 10000
-        // 可拖动滑条粗调，或选中后用左右方向键精细调节（每次 ±1）
         [Range(1, 10000)]
         [Increment(1)]
         [DefaultValue(1)]
         public int HpMultiplier { get; set; }
 
-        // ──困难模式前 Boss ─────────────────────────────────────────────
+        // ── 困难模式前 Boss ─────────────────────────────────────────────
         [Header("PreHardmode")]
         [DefaultValue(false)] public bool KingSlime       { get; set; }
         [DefaultValue(false)] public bool EyeOfCthulhu   { get; set; }

@@ -1,141 +1,146 @@
 Configs: {
 	DDRConfig: {
-		MoonLord: {
-			Tooltip: ""
-			Label: Moon Lord
-		}
-
-		LunaticCultist: {
-			Tooltip: ""
-			Label: Lunatic Cultist
-		}
+		DisplayName: Vanilla Bosses
 
 		Headers: {
-			Hardmode: Hardmode Header
-			PreHardmode: Pre Hardmode Header
-			General: General Header
-		}
-
-		EmpressOfLight: {
-			Tooltip: ""
-			Label: Empress Of Light
-		}
-
-		DukeFishron: {
-			Tooltip: ""
-			Label: Duke Fishron
-		}
-
-		Golem: {
-			Tooltip: ""
-			Label: Golem
-		}
-
-		Plantera: {
-			Tooltip: ""
-			Label: Plantera
-		}
-
-		SkeletronPrime: {
-			Tooltip: ""
-			Label: Skeletron Prime
-		}
-
-		Skeletron: {
-			Tooltip: ""
-			Label: Skeletron
-		}
-
-		TheDestroyer: {
-			Tooltip: ""
-			Label: The Destroyer
-		}
-
-		TheTwins: {
-			Tooltip: ""
-			Label: The Twins
-		}
-
-		QueenSlime: {
-			Tooltip: ""
-			Label: Queen Slime
-		}
-
-		WallOfFlesh: {
-			Tooltip: ""
-			Label: Wall Of Flesh
-		}
-
-		Deerclops: {
-			Tooltip: ""
-			Label: Deerclops
-		}
-
-		QueenBee: {
-			Tooltip: ""
-			Label: Queen Bee
-		}
-
-		BrainOfCthulhu: {
-			Tooltip: ""
-			Label: Brain Of Cthulhu
-		}
-
-		EaterOfWorlds: {
-			Tooltip: ""
-			Label: Eater Of Worlds
-		}
-
-		EyeOfCthulhu: {
-			Tooltip: ""
-			Label: Eye Of Cthulhu
-		}
-
-		KingSlime: {
-			Tooltip: ""
-			Label: King Slime
-		}
-
-		CurvePower: {
-			Tooltip: ""
-			Label: Curve Power
-		}
-
-		DisplayName: DDR Config
-
-		Enabled: {
-			Label: Enabled
-			Tooltip: ""
-		}
-
-		MinKillSeconds: {
-			Label: Min Kill Seconds
-			Tooltip: ""
-		}
-
-		HpMultiplier: {
-			Label: Hp Multiplier
-			Tooltip: ""
+			General: General
+			PreHardmode: Pre-Hardmode
+			Hardmode: Hardmode
 		}
 
 		EnableDamageReduction: {
 			Label: Enable Damage Reduction
-			Tooltip: ""
+			Tooltip: When enabled, selected bosses cannot be killed before the minimum kill time
+		}
+
+		MinKillSeconds: {
+			Label: Minimum Kill Time (s)
+			Tooltip: How many seconds the boss must survive before it can be killed
+		}
+
+		Sensitivity: {
+			Label: Reduction Strength
+			Tooltip: Higher = sharper damage reduction when your DPS is too high; lower = more gradual
+		}
+
+		MinDamageRatio: {
+			Label: Minimum Damage Ratio
+			Tooltip: Even with full reduction, each hit will always deal at least this fraction of base damage. 0.05 = minimum 5%, so the boss never becomes completely immune
+		}
+
+		PhaseRatio: {
+			Label: Limb Phase Ratio
+			Tooltip: Only affects multi-part bosses (e.g. Moon Lord, Golem). Sets what fraction of the kill timer is reserved for killing limbs/appendages before the main body. 0.5 = equal split. Ignored for single-part bosses
 		}
 
 		EnableHpMultiplier: {
-			Label: Enable Hp Multiplier
+			Label: Enable HP Multiplier
+			Tooltip: When enabled, selected bosses spawn with their HP multiplied by the set amount
+		}
+
+		HpMultiplier: {
+			Label: HP Multiplier
+			Tooltip: 1 = vanilla HP, 10 = ten times HP, max 10000
+		}
+
+		KingSlime: {
+			Label: King Slime
+			Tooltip: ""
+		}
+
+		EyeOfCthulhu: {
+			Label: Eye of Cthulhu
+			Tooltip: ""
+		}
+
+		EaterOfWorlds: {
+			Label: Eater of Worlds
+			Tooltip: ""
+		}
+
+		BrainOfCthulhu: {
+			Label: Brain of Cthulhu
+			Tooltip: ""
+		}
+
+		QueenBee: {
+			Label: Queen Bee
+			Tooltip: ""
+		}
+
+		Skeletron: {
+			Label: Skeletron
+			Tooltip: ""
+		}
+
+		Deerclops: {
+			Label: Deerclops
+			Tooltip: ""
+		}
+
+		WallOfFlesh: {
+			Label: Wall of Flesh
+			Tooltip: ""
+		}
+
+		QueenSlime: {
+			Label: Queen Slime
+			Tooltip: ""
+		}
+
+		TheTwins: {
+			Label: The Twins
+			Tooltip: ""
+		}
+
+		TheDestroyer: {
+			Label: The Destroyer
+			Tooltip: ""
+		}
+
+		SkeletronPrime: {
+			Label: Skeletron Prime
+			Tooltip: ""
+		}
+
+		Plantera: {
+			Label: Plantera
+			Tooltip: ""
+		}
+
+		Golem: {
+			Label: Golem
+			Tooltip: ""
+		}
+
+		DukeFishron: {
+			Label: Duke Fishron
+			Tooltip: ""
+		}
+
+		EmpressOfLight: {
+			Label: Empress of Light
+			Tooltip: ""
+		}
+
+		LunaticCultist: {
+			Label: Lunatic Cultist
+			Tooltip: ""
+		}
+
+		MoonLord: {
+			Label: Moon Lord
 			Tooltip: ""
 		}
 	}
 
 	DDRConfigCalamity: {
-		DisplayName: DDR Calamity Config
+		DisplayName: Calamity Bosses
 
 		Headers: {
-			PreHardmode: Pre Hardmode Header
-			Hardmode: Hardmode Header
-			PostMoonLord: Post Moon Lord Header
+			PreHardmode: Pre-Hardmode
+			Hardmode: Hardmode
+			PostMoonLord: Post-Moon Lord
 		}
 
 		DesertScourge: {
@@ -149,17 +154,17 @@ Configs: {
 		}
 
 		HiveMind: {
-			Label: Hive Mind
+			Label: The Hive Mind
 			Tooltip: ""
 		}
 
 		Perforators: {
-			Label: Perforators
+			Label: The Perforators
 			Tooltip: ""
 		}
 
 		SlimeGod: {
-			Label: Slime God
+			Label: The Slime God
 			Tooltip: ""
 		}
 
@@ -179,12 +184,12 @@ Configs: {
 		}
 
 		CalamitasClone: {
-			Label: Calamitas Clone
+			Label: Calamitas' Clone
 			Tooltip: ""
 		}
 
 		Leviathan: {
-			Label: Leviathan
+			Label: Leviathan & Anahita
 			Tooltip: ""
 		}
 
@@ -214,7 +219,7 @@ Configs: {
 		}
 
 		Dragonfolly: {
-			Label: Dragonfolly
+			Label: The Dragonfolly
 			Tooltip: ""
 		}
 
@@ -244,12 +249,12 @@ Configs: {
 		}
 
 		OldDuke: {
-			Label: Old Duke
+			Label: The Old Duke
 			Tooltip: ""
 		}
 
 		DevourerofGods: {
-			Label: Devourerof Gods
+			Label: Devourer of Gods
 			Tooltip: ""
 		}
 

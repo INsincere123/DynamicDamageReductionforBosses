@@ -4,18 +4,13 @@ using DynamicDamageReductionforBosses.Systems;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
 
 namespace DynamicDamageReductionforBosses.GlobalNPCs
 {
     public class DDRGlobalNPC : GlobalNPC
     {
-        /// <summary>
-        /// 实际生效时间 = MinKillSeconds - EndBuffer。
-        /// 让底线提前消失，避免在最后一帧卡着触发 CheckDead。
-        /// </summary>
-        private const float EndBuffer = 1f;     // 1 秒缓冲
         // ── Boss 生成 ─────────────────────────────────────────────────
+
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
             var config = ModContent.GetInstance<DDRConfig>();
@@ -23,32 +18,35 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
             if (!BossFightTracker.NpcTypeToFightKey.TryGetValue(npc.type, out string key)) return;
             if (!IsBossSelected(key, config)) return;
 
-            // 血量倍数（独立开关，先于计时器注册执行，确保 initialHP 记录缩放后的值）
             if (config.EnableHpMultiplier)
             {
                 int multiplier = Math.Max(1, Math.Min(2000, config.HpMultiplier));
                 if (multiplier > 1)
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * multiplier);
+                    npc.lifeMax = (int)Math.Min((long)npc.lifeMax * multiplier, int.MaxValue);
                     npc.life    = npc.lifeMax;
                 }
             }
 
-            // 动态减伤需要记录计时器和初始 HP
             if (config.EnableDamageReduction)
                 BossFightTracker.RegisterSpawn(npc);
         }
 
-        // ── 层1：软减伤 ───────────────────────────────────────────────
+        // ── 减伤应用 ──────────────────────────────────────────────────
+
         public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
-            => ApplySoftReduction(npc, ref modifiers);
+            => ApplyReduction(npc, ref modifiers);
 
         public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers)
-            => ApplySoftReduction(npc, ref modifiers);
+            => ApplyReduction(npc, ref modifiers);
 
-        // ── 层2：HP 底线兜底 ──────────────────────────────────────────
+        // ── 致死 NPC 最终兜底 ─────────────────────────────────────────
+
         public override bool CheckDead(NPC npc)
         {
+            // 只保护致死 NPC；非致死部位允许自然死亡（脚本触发、相位切换等）
+            if (!BossFightTracker.KillNpcTypes.Contains(npc.type)) return true;
+
             var config = ModContent.GetInstance<DDRConfig>();
             if (config == null || !config.EnableDamageReduction) return true;
             if (!BossFightTracker.NpcTypeToFightKey.TryGetValue(npc.type, out string key)) return true;
@@ -56,21 +54,20 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
 
             var state = BossFightTracker.GetFightState(npc);
             if (state == null || !state.InitialHP.TryGetValue(npc.whoAmI, out int initialHP)) return true;
+            if (initialHP <= 0) return true;
 
-            float elapsed        = (Main.GameUpdateCount - state.StartTick) / 60f;
-            float effectiveTime  = MathF.Max(1f, config.MinKillSeconds) - EndBuffer;
-            if (elapsed >= effectiveTime) return true;
+            // 全局 T2/T1 地板——与 ApplyReduction 中致死 NPC 的硬地板保持一致
+            float t2 = (Main.GameUpdateCount - state.StartTick) / 60f;
+            if (t2 >= config.MinKillSeconds) return true;
 
-            int floor = SuperellipseFloor(initialHP, elapsed / effectiveTime, MathF.Max(0.1f, config.CurvePower));
-            if (floor <= 0) return true;
-
-            npc.life = floor;
+            float ratio = Math.Max(1f - t2 / config.MinKillSeconds, 0f);
+            npc.life = Math.Max(1, (int)(initialHP * ratio));
             return false;
         }
 
         // ─────────────────────────────────────────────────────────────
 
-        private static void ApplySoftReduction(NPC npc, ref NPC.HitModifiers modifiers)
+        private static void ApplyReduction(NPC npc, ref NPC.HitModifiers modifiers)
         {
             var config = ModContent.GetInstance<DDRConfig>();
             if (config == null || !config.EnableDamageReduction) return;
@@ -78,35 +75,38 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
             if (!IsBossSelected(key, config)) return;
 
             var state = BossFightTracker.GetFightState(npc);
-            if (state == null || !state.InitialHP.TryGetValue(npc.whoAmI, out int initialHP)) return;
-            if (initialHP <= 0) return;
+            if (state == null) return;
 
-            float elapsed       = (Main.GameUpdateCount - state.StartTick) / 60f;
-            float effectiveTime = MathF.Max(1f, config.MinKillSeconds) - EndBuffer;
-            if (elapsed >= effectiveTime) return;
+            float t2 = (Main.GameUpdateCount - state.StartTick) / 60f;
+            float t1 = config.MinKillSeconds;
+            if (t2 >= t1) return;
 
-            float p      = MathF.Max(0.1f, config.CurvePower);
-            float tRatio = elapsed / effectiveTime;
-            float hRatio = (float)npc.life / initialHP;
+            bool isKillNpc = BossFightTracker.KillNpcTypes.Contains(npc.type);
 
-            float S     = MathF.Pow(tRatio, p) + MathF.Pow(hRatio, p);
-            float delta = MathF.Max(0f, 1f - S);
-            if (delta > 0f)
+            // 软层：SmoothedN 由 BossFightTracker.PostUpdateEverything 每帧维护
+            modifiers.SourceDamage *= state.SmoothedN;
+
+            if (isKillNpc)
             {
-                float multiplier = 1f / (1f + 10f * delta);
-                modifiers.SourceDamage *= MathF.Max(0.01f, multiplier);
+                // 致死 NPC 硬地板：全局 T2/T1，保证不早于 T1 死亡
+                if (state.InitialHP.TryGetValue(npc.whoAmI, out int killInitHP) && killInitHP > 0)
+                {
+                    float hFloor = killInitHP * Math.Max(1f - t2 / t1, 0f);
+                    modifiers.SetMaxDamage(Math.Max(1, npc.life - (int)hFloor));
+                }
             }
-
-            int floor = SuperellipseFloor(initialHP, tRatio, p);
-            if (floor > 0 && npc.life > floor)
-                modifiers.SetMaxDamage(Math.Max(1, npc.life - floor));
-        }
-
-        private static int SuperellipseFloor(int initialHP, float tRatio, float p)
-        {
-            float inner = 1f - MathF.Pow(tRatio, p);
-            if (inner <= 0f) return 0;
-            return (int)(initialHP * MathF.Pow(inner, 1f / p));
+            else if (state.HasNonKillParts && state.Phase2StartTick < 0)
+            {
+                // 非致死部位硬地板：仅在 Phase 1 期间，使用 α×T1 时间预算
+                float T_phase1 = config.PhaseRatio * t1;
+                if (T_phase1 > 0 &&
+                    state.InitialHP.TryGetValue(npc.whoAmI, out int partInitHP) && partInitHP > 0)
+                {
+                    float hFloor = partInitHP * Math.Max(1f - t2 / T_phase1, 0f);
+                    modifiers.SetMaxDamage(Math.Max(1, npc.life - (int)hFloor));
+                }
+            }
+            // Phase 2 中的非致死部位（若仍存活）：仅受 SmoothedN 软约束，无硬地板
         }
 
         private static bool IsBossSelected(string key, DDRConfig cfg)
@@ -136,7 +136,7 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
             };
             if (vanilla) return true;
 
-            // ── 灾厄 Boss（仅在灾厄 Config 加载时生效）─────────────────
+            // ── 灾厄 Boss ────────────────────────────────────────────
             var cal = ModContent.GetInstance<DDRConfigCalamity>();
             if (cal == null) return false;
 
