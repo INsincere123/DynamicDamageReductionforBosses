@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using DynamicDamageReductionforBosses.Config;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DynamicDamageReductionforBosses.Systems
@@ -47,6 +49,20 @@ namespace DynamicDamageReductionforBosses.Systems
 
         /// <summary>fightKey → 战斗状态。</summary>
         public static readonly Dictionary<string, BossFightState> ActiveFights = new();
+
+        // ── 自定义 Boss 注册状态 ──────────────────────────────────────
+
+        /// <summary>PostSetupContent 完成后置为 true，OnChanged 以此判断是否可以注册。</summary>
+        public static bool IsInitialized { get; private set; }
+
+        /// <summary>本次自定义注册加入的 NPC type，用于下次注册前清除旧数据。</summary>
+        private static readonly HashSet<int> _customNpcTypes = new();
+
+        /// <summary>自定义战斗 Key 集合，IsBossSelected 用来判断是否生效。</summary>
+        public static readonly HashSet<string> CustomFightKeys = new();
+
+        /// <summary>待打印的消息（进世界前排队，进世界后由 DDRPlayer.OnEnterWorld 刷出）。</summary>
+        private static readonly List<(string text, Color color)> _pendingMessages = new();
 
         // ── 致死 NPC 集合 ─────────────────────────────────────────────
         // 只有这些 NPC 的死亡才等同于"Boss 被击败"。
@@ -288,6 +304,8 @@ namespace DynamicDamageReductionforBosses.Systems
             RegisterCalamityBosses();
             RegisterFargoBosses();
             RegisterThoriumBosses();
+            IsInitialized = true;
+            RegisterCustomBosses(ModContent.GetInstance<DDRConfigCustom>());
         }
 
         /// <summary>
@@ -600,6 +618,81 @@ namespace DynamicDamageReductionforBosses.Systems
             TryAdd("UnstableAnger",          "ThePrimordials");
             TryAdd("LucidBubble",            "ThePrimordials");
             TryAddKill("DreamEater");
+        }
+
+        /// <summary>
+        /// 解析自定义 Boss 条目并注册。可被 PostSetupContent 和 ModConfig.OnChanged 调用。
+        /// 每次调用前清除上次自定义注册的数据，保证增删改即时生效。
+        /// </summary>
+        public static void RegisterCustomBosses(DDRConfigCustom config)
+        {
+            // 清除上次自定义注册
+            foreach (int type in _customNpcTypes)
+            {
+                NpcTypeToFightKey.Remove(type);
+                KillNpcTypes.Remove(type);
+            }
+            _customNpcTypes.Clear();
+            CustomFightKeys.Clear();
+            _pendingMessages.Clear();
+
+            if (config?.CustomBosses == null || config.CustomBosses.Count == 0)
+                return;
+
+            bool zh = Language.ActiveCulture.CultureInfo.TwoLetterISOLanguageName == "zh";
+
+            var lines = new List<(string, Color)>
+            {
+                (zh ? "[DDR] 自定义 Boss 注册结果：" : "[DDR] Custom boss registration:", Color.White)
+            };
+
+            bool anyEntry = false;
+
+            foreach (var entry in config.CustomBosses)
+            {
+                if (string.IsNullOrWhiteSpace(entry.ModName) ||
+                    string.IsNullOrWhiteSpace(entry.ClassName))
+                    continue;
+
+                anyEntry = true;
+                string fullName  = $"{entry.ModName}/{entry.ClassName}";
+                string fightKey  = string.IsNullOrWhiteSpace(entry.GroupKey)
+                                   ? entry.ClassName
+                                   : entry.GroupKey;
+
+                if (!ModContent.TryFind<ModNPC>(fullName, out var modNpc))
+                {
+                    string reason = ModLoader.HasMod(entry.ModName)
+                        ? (zh ? "类名未找到" : "class not found")
+                        : (zh ? "模组未加载" : "mod not loaded");
+                    lines.Add(($"  ✗ {fullName} — {reason}", Color.OrangeRed));
+                    continue;
+                }
+
+                NpcTypeToFightKey[modNpc.Type] = fightKey;
+                CustomFightKeys.Add(fightKey);
+                _customNpcTypes.Add(modNpc.Type);
+                if (entry.IsKillNpc)
+                    KillNpcTypes.Add(modNpc.Type);
+
+                lines.Add(($"  ✓ {fullName} → \"{fightKey}\"", Color.LightGreen));
+            }
+
+            if (!anyEntry) return;
+
+            // 在游戏内直接打印；否则排队等 OnEnterWorld
+            if (!Main.gameMenu)
+                foreach (var (text, color) in lines) Main.NewText(text, color);
+            else
+                _pendingMessages.AddRange(lines);
+        }
+
+        /// <summary>进入世界时由 DDRPlayer 调用，打印排队的注册结果。</summary>
+        public static void FlushMessages()
+        {
+            foreach (var (text, color) in _pendingMessages)
+                Main.NewText(text, color);
+            _pendingMessages.Clear();
         }
 
         public override void OnWorldUnload()

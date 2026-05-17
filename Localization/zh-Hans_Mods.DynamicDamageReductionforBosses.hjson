@@ -442,4 +442,37 @@ Configs: {
 			Tooltip: ""
 		}
 	}
+
+	DDRConfigCustom: {
+		DisplayName: ⑤ 自定义Boss
+
+		CustomBosses: {
+			Label: 自定义 Boss 列表
+			Tooltip: ""
+		}
+	}
+
+	CustomBossEntry: {
+		Tooltip: ""
+
+		ModName: {
+			Label: 模组内部名
+			Tooltip: 在模组列表或 Workshop 页面查找技术名称，如 CalamityMod
+		}
+
+		ClassName: {
+			Label: NPC 类名
+			Tooltip: 需查阅模组源码或 Wiki，如 SupremeCalamitas
+		}
+
+		GroupKey: {
+			Label: 分组名（多段 Boss）
+			Tooltip: 同一场战斗的多段 Boss 填相同值，共享计时器；单体 Boss 留空
+		}
+
+		IsKillNpc: {
+			Label: 致死 NPC
+			Tooltip: 勾选 = 受硬地板保护，时间未到不会死；不勾 = 只受软减伤，可自然死亡（适用于手、臂等附属部位）
+		}
+	}
 }

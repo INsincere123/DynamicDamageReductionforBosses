@@ -442,4 +442,37 @@ Configs: {
 			Tooltip: ""
 		}
 	}
+
+	DDRConfigCustom: {
+		DisplayName: ⑤ Custom Bosses
+
+		CustomBosses: {
+			Label: Custom Boss List
+			Tooltip: ""
+		}
+	}
+
+	CustomBossEntry: {
+		Tooltip: ""
+
+		ModName: {
+			Label: Mod Internal Name
+			Tooltip: The mod's technical name, found in its mod browser entry or Workshop page. e.g. CalamityMod
+		}
+
+		ClassName: {
+			Label: NPC Class Name
+			Tooltip: The C# class name of the NPC. Check the mod's source code or wiki. e.g. SupremeCalamitas
+		}
+
+		GroupKey: {
+			Label: Group Key (multi-part bosses)
+			Tooltip: Entries with the same group key share a fight timer. Leave empty for standalone single-part bosses
+		}
+
+		IsKillNpc: {
+			Label: Is Kill NPC
+			Tooltip: Checked = protected by HP floor (cannot die before the timer); unchecked = soft reduction only, can die naturally (use for limbs, arms, appendages)
+		}
+	}
 }

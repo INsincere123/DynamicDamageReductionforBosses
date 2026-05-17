@@ -200,6 +200,9 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
                 if (fargoResult) return true;
             }
 
+            // ── 自定义 Boss ──────────────────────────────────────────────
+            if (BossFightTracker.CustomFightKeys.Contains(key)) return true;
+
             // ── Thorium Mod Boss ─────────────────────────────────────
             var thorium = ModContent.GetInstance<DDRConfigThorium>();
             if (thorium == null) return false;
