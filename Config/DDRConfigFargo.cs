@@ -16,23 +16,23 @@ namespace DynamicDamageReductionforBosses.Config
         // ── 主线 Boss ────────────────────────────────────────────────
         [Header("Bosses")]
         [DefaultValue(false)] public bool TrojanSquirrel  { get; set; }
-        [DefaultValue(false)] public bool BanishedBaron   { get; set; }
-        [DefaultValue(false)] public bool DeviBoss         { get; set; }
         [DefaultValue(false)] public bool CursedCoffin    { get; set; }
-        [DefaultValue(false)] public bool AbomBoss         { get; set; }
+        [DefaultValue(false)] public bool DeviBoss        { get; set; }
+        [DefaultValue(false)] public bool BanishedBaron   { get; set; }
         [DefaultValue(false)] public bool LifeChallenger  { get; set; }
+        [DefaultValue(false)] public bool CosmosChampion  { get; set; }
+        [DefaultValue(false)] public bool AbomBoss        { get; set; }
         [DefaultValue(false)] public bool MutantBoss      { get; set; }
 
-        // ── 冠军 Boss ────────────────────────────────────────────────
-        [Header("Champions")]
-        [DefaultValue(false)] public bool CosmosChampion  { get; set; }
-        [DefaultValue(false)] public bool EarthChampion   { get; set; }
-        [DefaultValue(false)] public bool LifeChampion    { get; set; }
-        [DefaultValue(false)] public bool NatureChampion  { get; set; }
-        [DefaultValue(false)] public bool ShadowChampion  { get; set; }
-        [DefaultValue(false)] public bool SpiritChampion  { get; set; }
-        [DefaultValue(false)] public bool TerraChampion   { get; set; }
+        // ── 迷你 Boss ────────────────────────────────────────────────
+        [Header("MiniBosses")]
         [DefaultValue(false)] public bool TimberChampion  { get; set; }
+        [DefaultValue(false)] public bool TerraChampion   { get; set; }
+        [DefaultValue(false)] public bool EarthChampion   { get; set; }
+        [DefaultValue(false)] public bool NatureChampion  { get; set; }
+        [DefaultValue(false)] public bool LifeChampion    { get; set; }
+        [DefaultValue(false)] public bool SpiritChampion  { get; set; }
+        [DefaultValue(false)] public bool ShadowChampion  { get; set; }
         [DefaultValue(false)] public bool WillChampion    { get; set; }
     }
 }

@@ -359,21 +359,11 @@ Configs: {
 
 		Headers: {
 			Bosses: Bosses
-			Champions: Champions
+			MiniBosses: Mini Bosses
 		}
 
 		TrojanSquirrel: {
 			Label: Trojan Squirrel
-			Tooltip: ""
-		}
-
-		BanishedBaron: {
-			Label: Banished Baron
-			Tooltip: ""
-		}
-
-		DeviBoss: {
-			Label: Deviantt
 			Tooltip: ""
 		}
 
@@ -382,8 +372,13 @@ Configs: {
 			Tooltip: ""
 		}
 
-		AbomBoss: {
-			Label: Abomination
+		DeviBoss: {
+			Label: Deviantt
+			Tooltip: ""
+		}
+
+		BanishedBaron: {
+			Label: Banished Baron
 			Tooltip: ""
 		}
 
@@ -392,38 +387,23 @@ Configs: {
 			Tooltip: ""
 		}
 
-		MutantBoss: {
-			Label: Mutant
-			Tooltip: ""
-		}
-
 		CosmosChampion: {
 			Label: Cosmos Champion
 			Tooltip: ""
 		}
 
-		EarthChampion: {
-			Label: Earth Champion
+		AbomBoss: {
+			Label: Abomination
 			Tooltip: ""
 		}
 
-		LifeChampion: {
-			Label: Life Champion
+		MutantBoss: {
+			Label: Mutant
 			Tooltip: ""
 		}
 
-		NatureChampion: {
-			Label: Nature Champion
-			Tooltip: ""
-		}
-
-		ShadowChampion: {
-			Label: Shadow Champion
-			Tooltip: ""
-		}
-
-		SpiritChampion: {
-			Label: Spirit Champion
+		TimberChampion: {
+			Label: Timber Champion
 			Tooltip: ""
 		}
 
@@ -432,8 +412,28 @@ Configs: {
 			Tooltip: ""
 		}
 
-		TimberChampion: {
-			Label: Timber Champion
+		EarthChampion: {
+			Label: Earth Champion
+			Tooltip: ""
+		}
+
+		NatureChampion: {
+			Label: Nature Champion
+			Tooltip: ""
+		}
+
+		LifeChampion: {
+			Label: Life Champion
+			Tooltip: ""
+		}
+
+		SpiritChampion: {
+			Label: Spirit Champion
+			Tooltip: ""
+		}
+
+		ShadowChampion: {
+			Label: Shadow Champion
 			Tooltip: ""
 		}
 

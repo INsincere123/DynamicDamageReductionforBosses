@@ -358,22 +358,12 @@ Configs: {
 		DisplayName: ③ 法狗Boss
 
 		Headers: {
-			Bosses: 主线 Boss
-			Champions: 英灵
+			Bosses: Boss
+			MiniBosses: 迷你 Boss
 		}
 
 		TrojanSquirrel: {
 			Label: 特洛伊松鼠
-			Tooltip: ""
-		}
-
-		BanishedBaron: {
-			Label: 放逐遗爵
-			Tooltip: ""
-		}
-
-		DeviBoss: {
-			Label: 戴薇安
 			Tooltip: ""
 		}
 
@@ -382,8 +372,13 @@ Configs: {
 			Tooltip: ""
 		}
 
-		AbomBoss: {
-			Label: 憎恶
+		DeviBoss: {
+			Label: 戴薇安
+			Tooltip: ""
+		}
+
+		BanishedBaron: {
+			Label: 放逐遗爵
 			Tooltip: ""
 		}
 
@@ -392,38 +387,23 @@ Configs: {
 			Tooltip: ""
 		}
 
-		MutantBoss: {
-			Label: 突变体
-			Tooltip: ""
-		}
-
 		CosmosChampion: {
 			Label: 厄里达诺斯，宇宙英灵
 			Tooltip: ""
 		}
 
-		EarthChampion: {
-			Label: 大地英灵
+		AbomBoss: {
+			Label: 憎恶
 			Tooltip: ""
 		}
 
-		LifeChampion: {
-			Label: 生命英灵
+		MutantBoss: {
+			Label: 突变体
 			Tooltip: ""
 		}
 
-		NatureChampion: {
-			Label: 自然英灵
-			Tooltip: ""
-		}
-
-		ShadowChampion: {
-			Label: 死亡英灵
-			Tooltip: ""
-		}
-
-		SpiritChampion: {
-			Label: 心灵英灵
+		TimberChampion: {
+			Label: 森林英灵
 			Tooltip: ""
 		}
 
@@ -432,8 +412,28 @@ Configs: {
 			Tooltip: ""
 		}
 
-		TimberChampion: {
-			Label: 森林英灵
+		EarthChampion: {
+			Label: 大地英灵
+			Tooltip: ""
+		}
+
+		NatureChampion: {
+			Label: 自然英灵
+			Tooltip: ""
+		}
+
+		LifeChampion: {
+			Label: 生命英灵
+			Tooltip: ""
+		}
+
+		SpiritChampion: {
+			Label: 心灵英灵
+			Tooltip: ""
+		}
+
+		ShadowChampion: {
+			Label: 死亡英灵
 			Tooltip: ""
 		}
 
