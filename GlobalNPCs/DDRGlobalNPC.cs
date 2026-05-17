@@ -138,10 +138,10 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
 
             // ── 灾厄 Boss ────────────────────────────────────────────
             var cal = ModContent.GetInstance<DDRConfigCalamity>();
-            if (cal == null) return false;
-
-            return key switch
+            if (cal != null)
             {
+                bool calamity = key switch
+                {
                 "DesertScourge"        => cal.DesertScourge,
                 "Crabulon"             => cal.Crabulon,
                 "HiveMind"             => cal.HiveMind,
@@ -167,8 +167,35 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
                 "DevourerofGods"       => cal.DevourerofGods,
                 "Yharon"               => cal.Yharon,
                 "ExoMechs"             => cal.ExoMechs,
-                "SupremeCalamitas"     => cal.SupremeCalamitas,
-                _                      => false,
+                    "SupremeCalamitas"     => cal.SupremeCalamitas,
+                    _                      => false,
+                };
+                if (calamity) return true;
+            }
+
+            // ── Fargo's Souls Mod Boss ───────────────────────────────
+            var fargo = ModContent.GetInstance<DDRConfigFargo>();
+            if (fargo == null) return false;
+
+            return key switch
+            {
+                "TrojanSquirrel"  => fargo.TrojanSquirrel,
+                "BanishedBaron"   => fargo.BanishedBaron,
+                "DeviBoss"        => fargo.DeviBoss,
+                "CursedCoffin"    => fargo.CursedCoffin,
+                "Abomination"     => fargo.AbomBoss,
+                "LifeChallenger"  => fargo.LifeChallenger,
+                "MutantBoss"      => fargo.MutantBoss,
+                "CosmosChampion"  => fargo.CosmosChampion,
+                "EarthChampion"   => fargo.EarthChampion,
+                "LifeChampion"    => fargo.LifeChampion,
+                "NatureChampion"  => fargo.NatureChampion,
+                "ShadowChampion"  => fargo.ShadowChampion,
+                "SpiritChampion"  => fargo.SpiritChampion,
+                "TerraChampion"   => fargo.TerraChampion,
+                "TimberChampion"  => fargo.TimberChampion,
+                "WillChampion"    => fargo.WillChampion,
+                _                 => false,
             };
         }
     }

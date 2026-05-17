@@ -286,6 +286,7 @@ namespace DynamicDamageReductionforBosses.Systems
         public override void PostSetupContent()
         {
             RegisterCalamityBosses();
+            RegisterFargoBosses();
         }
 
         /// <summary>
@@ -401,6 +402,87 @@ namespace DynamicDamageReductionforBosses.Systems
             TryAddKill("Artemis");
             TryAddKill("ThanatosHead");
             TryAddKill("SupremeCalamitas");
+        }
+
+        /// <summary>
+        /// 在 PostSetupContent 里动态注册 Fargo's Souls Mod Boss 的 NPC 类型映射。
+        /// </summary>
+        private static void RegisterFargoBosses()
+        {
+            if (!ModLoader.TryGetMod("FargowiltasSouls", out _)) return;
+
+            void TryAdd(string className, string key)
+            {
+                if (ModContent.TryFind<ModNPC>($"FargowiltasSouls/{className}", out var npc))
+                    NpcTypeToFightKey[npc.Type] = key;
+            }
+
+            void TryAddKill(string className)
+            {
+                if (ModContent.TryFind<ModNPC>($"FargowiltasSouls/{className}", out var npc))
+                    KillNpcTypes.Add(npc.Type);
+            }
+
+            // ── 主线 Boss ────────────────────────────────────────────
+            TryAdd("TrojanSquirrel",      "TrojanSquirrel");
+            TryAdd("TrojanSquirrelHead",  "TrojanSquirrel");
+            TryAdd("TrojanSquirrelArms",  "TrojanSquirrel");
+            TryAddKill("TrojanSquirrel");                      // 躯干死亡=战斗结束；头/手臂可自然死亡
+
+            TryAdd("BanishedBaron",       "BanishedBaron");
+            TryAddKill("BanishedBaron");
+
+            TryAdd("DeviBoss",            "DeviBoss");
+            TryAddKill("DeviBoss");
+
+            TryAdd("CursedCoffin",        "CursedCoffin");
+            TryAdd("CursedSpirit",        "CursedCoffin");
+            TryAddKill("CursedCoffin");                        // CursedSpirit 可自然死亡
+
+            TryAdd("AbomBoss",            "Abomination");
+            TryAdd("AbomSaucer",          "Abomination");
+            TryAddKill("AbomBoss");                            // AbomSaucer 可自然死亡
+
+            TryAdd("LifeChallenger",      "LifeChallenger");
+            TryAddKill("LifeChallenger");
+
+            TryAdd("MutantBoss",          "MutantBoss");
+            TryAdd("MutantIllusion",      "MutantBoss");
+            TryAddKill("MutantBoss");                          // MutantIllusion 可自然死亡
+
+            // ── 冠军 Boss ────────────────────────────────────────────
+            TryAdd("CosmosChampion",      "CosmosChampion");
+            TryAddKill("CosmosChampion");
+
+            TryAdd("EarthChampion",       "EarthChampion");
+            TryAdd("EarthChampionHand",   "EarthChampion");
+            TryAddKill("EarthChampion");
+
+            TryAdd("LifeChampion",        "LifeChampion");
+            TryAddKill("LifeChampion");
+
+            TryAdd("NatureChampion",      "NatureChampion");
+            TryAdd("NatureChampionHead",  "NatureChampion");
+            TryAddKill("NatureChampion");
+
+            TryAdd("ShadowChampion",      "ShadowChampion");
+            TryAdd("ShadowOrbNPC",        "ShadowChampion");
+            TryAddKill("ShadowChampion");
+
+            TryAdd("SpiritChampion",      "SpiritChampion");
+            TryAdd("SpiritChampionHand",  "SpiritChampion");
+            TryAddKill("SpiritChampion");
+
+            TryAdd("TerraChampion",       "TerraChampion");
+            TryAdd("TerraChampionBody",   "TerraChampion");
+            TryAddKill("TerraChampion");
+
+            TryAdd("TimberChampionHead",  "TimberChampion");  // Head 是主体
+            TryAdd("TimberChampion",      "TimberChampion");
+            TryAddKill("TimberChampionHead");
+
+            TryAdd("WillChampion",        "WillChampion");
+            TryAddKill("WillChampion");
         }
 
         public override void OnWorldUnload()
