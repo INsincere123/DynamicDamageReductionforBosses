@@ -35,7 +35,7 @@ Configs: {
 
 		EnableHpMultiplier: {
 			Label: Enable HP Multiplier
-			Tooltip: When enabled, selected bosses spawn with their HP multiplied by the set amount
+			Tooltip: When enabled, selected bosses spawn with their HP multiplied. If you're seeing lots of 1s, try turning this on
 		}
 
 		HpMultiplier: {

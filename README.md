@@ -1,15 +1,19 @@
 # BOSS动态减伤 / Dynamic Boss Damage Reduction
 
-> tModLoader 1.4 工具 Mod — 面向模组开发者和武器测试者  
-> A tModLoader 1.4 utility mod for mod developers and weapon testers
+> 装备太强，打 Boss 太快？这个 Mod 帮你找回完整的战斗体验  
+> Too strong for your own good? This mod gives you back the fight
 
 ---
 
 ## 中文
 
-### 用途
+### 这是什么
 
-在测试高伤害武器时，前期 Boss 经常被瞬间秒杀，根本来不及观察战斗流程或收集数据。本 Mod 通过动态减伤系统，强制 Boss 至少存活设定的时间，让你完整经历整场战斗。
+带着后期装备打前期 Boss，结果一开始就结束了——这种感觉你懂的。
+
+本 Mod 能让你重新好好打一场 Boss 战。不管装备多强，Boss 都会撑够你设定的时间，血量曲线平滑自然，不会卡住，也不会打出满屏的 1。时间一到，限制立刻解除，痛快收尾。
+
+对于**模组开发者和武器测试者**：高 DPS 武器在前期 Boss 身上根本无法正常测试。本 Mod 能强制 Boss 存活足够时间，让你完整收集战斗数据。配合血量倍数还可以模拟更长的持续输出，测量 DPS 曲线、触发频率等关键指标。
 
 ### 使用方法
 
@@ -63,9 +67,13 @@
 
 ## English
 
-### What it does
+### What is this
 
-When testing high-damage weapons, early-game bosses die instantly — making it impossible to observe fight patterns or collect useful data. This mod forces bosses to survive for a configurable minimum duration using a dynamic damage reduction system.
+You go back to fight an early boss with your endgame gear — and it's over before the music even kicks in.
+
+This mod gives you back the fight. No matter how powerful you are, the boss will last as long as you set it to. HP drains smoothly and naturally, with no stalling and no walls of 1s. When the timer runs out, all limits lift instantly — finish it off.
+
+For **mod developers and weapon testers**: high-DPS weapons are nearly impossible to test on early bosses — they just instantly die. This mod keeps any boss alive long enough to run the full fight, no matter how broken your damage is. Combine it with the HP multiplier to simulate extended encounters and measure DPS curves, proc rates, and fight pacing.
 
 ### How to use
 

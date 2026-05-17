@@ -1,23 +1,28 @@
 [h1]BOSS动态减伤 / Dynamic Boss Damage Reduction[/h1]
 
-[i]面向模组开发者和武器测试者的工具 Mod / A utility mod for mod developers and weapon testers[/i]
-
 [hr][/hr]
 
 [h2]🇨🇳 中文说明[/h2]
 
-[h3]用途[/h3]
-在用高伤害武器测试时，前期 Boss 往往被瞬间秒杀，完全无法观察战斗流程、收集数据。本 Mod 通过动态减伤机制，强制 Boss 至少存活设定的时间，让你完整经历整场战斗。
+[h3]装备太强，打 Boss 太快？[/h3]
+带着后期装备回去打前期 Boss，结果一开始就结束了——这种感觉你懂吗？
+
+本 Mod 能让你重新好好打一场 Boss 战。不管装备多强，Boss 都会撑够你设定的时间，让战斗完整地打完。血量曲线平滑自然，不会突然卡住，也不会打出满屏的 1——就像 Boss 本来就应该这么硬一样。
+
+当然，设定的时间一到，所有限制立刻解除，最后一下痛快地收尾。
 
 [h3]功能[/h3]
 [list]
-[*] [b]最短击杀时间[/b]：滑条设置 Boss 至少存活多少秒，超时后伤害完全恢复
-[*] [b]平滑减伤曲线[/b]：基于双曲正切函数动态计算减伤，血量下降自然流畅，不会突然卡住
-[*] [b]保底伤害[/b]：无论减伤多强，每次攻击都至少造成原始伤害的指定比例，不会打出满屏 1
-[*] [b]多段 Boss 支持[/b]：月亮领主、机械骷髅王等多部位 Boss 各相位独立计时，相位切换不被拦截
-[*] [b]血量倍数[/b]：可将选中 Boss 的血量乘以指定倍数，适合长时间耐久测试
-[*] [b]无需物品[/b]：所有设置均在 Mod 配置界面完成
+[*] [b]最短存活时间[/b]：为每个 Boss 单独设置，时间到后伤害完全恢复
+[*] [b]平滑自然的战斗体验[/b]：动态计算减伤，血量匀速下降，不会有卡顿感
+[*] [b]保底伤害[/b]：减伤再强也不会让你打出满屏 1，每击都有实感
+[*] [b]多段 Boss 完整支持[/b]：月亮领主、机械骷髅王等多部位 Boss 相位切换正常进行
+[*] [b]血量倍数[/b]：嫌 Boss 血量太少？直接乘个倍数，打得过瘾
+[*] [b]无需物品[/b]：所有设置在配置界面完成，随时调整
 [/list]
+
+[h3]对于模组开发者 / 武器测试者[/h3]
+高 DPS 武器在前期 Boss 身上根本无法正常测试——Boss 一触即溃，你什么数据都拿不到。本 Mod 能强制 Boss 在指定时间内存活，让每一场战斗都能完整走完，无论你的输出有多离谱。结合血量倍数功能，还可以模拟更长的持续战斗，收集 DPS 曲线、技能触发频率等关键数据。
 
 [h3]兼容支持[/h3]
 [list]
@@ -28,22 +33,35 @@
 [/list]
 以上三个扩展 Mod 均为[b]可选依赖[/b]，未安装时对应配置项自动无效。
 
+[h3]注意事项[/h3]
+[list]
+[*] 世界吞噬者体节分裂机制特殊，不设硬性血量地板，但减伤仍然生效
+[*] 主要面向单人游戏，联机行为未经测试
+[/list]
+
 [hr][/hr]
 
 [h2]🇬🇧 English[/h2]
 
-[h3]What it does[/h3]
-When testing weapons with high damage output, early-game bosses die in an instant — making it impossible to observe fight patterns or collect meaningful data. This mod applies a dynamic damage reduction system that forces bosses to survive for a configurable minimum duration.
+[h3]Too strong for your own good?[/h3]
+You go back to fight an early boss with your endgame gear — and it's over before the music even kicks in.
+
+This mod gives you back the fight. No matter how powerful you are, the boss will last as long as you set it to. HP drains smoothly and naturally, never stalling, never showing walls of 1s — it just feels like the boss was always this tough.
+
+And when the timer runs out, all limits lift immediately. Finish it off.
 
 [h3]Features[/h3]
 [list]
-[*] [b]Minimum kill time[/b]: Set how many seconds each boss must survive. Damage is fully restored once the timer expires.
-[*] [b]Smooth reduction curve[/b]: Uses a tanh-based soft layer updated every frame, so HP drains naturally rather than suddenly stalling.
-[*] [b]Damage floor[/b]: No matter how strong the reduction, each hit always deals at least a configurable fraction of base damage — you'll never see walls of 1s.
-[*] [b]Multi-part boss support[/b]: Moon Lord, Skeletron Prime, and similar bosses have phase-aware timers. Phase transitions (hands/arms dying) are not blocked.
-[*] [b]HP multiplier[/b]: Multiply a boss's max HP by up to 10,000× for extended endurance testing.
-[*] [b]No items required[/b]: Everything is configured through the in-game Mod Config UI.
+[*] [b]Minimum survival time[/b]: Set individually per boss. All limits lift the moment the timer expires.
+[*] [b]Smooth, natural fights[/b]: Dynamic reduction keeps HP draining at a steady pace — no sudden freezes or jarring pauses.
+[*] [b]Damage floor[/b]: Even at maximum reduction, every hit still deals a real amount of damage. No walls of 1s.
+[*] [b]Full multi-part boss support[/b]: Moon Lord, Skeletron Prime, and others go through their phase transitions normally.
+[*] [b]HP multiplier[/b]: Want a longer fight? Multiply the boss's HP by any amount.
+[*] [b]No items required[/b]: Everything is in the Mod Config screen — change settings anytime.
 [/list]
+
+[h3]For mod developers & weapon testers[/h3]
+High-DPS weapons are nearly impossible to test on early bosses — they just die instantly. This mod keeps any boss alive for as long as you need, so every fight runs its full course no matter how broken your damage numbers are. Pair it with the HP multiplier to simulate extended encounters and gather real data on DPS curves, proc rates, and fight pacing.
 
 [h3]Mod compatibility[/h3]
 [list]
@@ -56,6 +74,6 @@ All three companion mods are [b]optional[/b]. If not installed, their config ent
 
 [h3]Notes[/h3]
 [list]
-[*] Eater of Worlds segments are not hard-floored (splitting mechanics would break), but the soft reduction still applies.
-[*] This mod is intended for single-player testing sessions. Multiplayer behavior is untested.
+[*] Eater of Worlds has special splitting mechanics — no hard floor is applied to its segments, but damage reduction still works.
+[*] Designed for single-player. Multiplayer behavior is untested.
 [/list]
