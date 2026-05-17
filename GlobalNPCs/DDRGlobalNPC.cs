@@ -13,7 +13,7 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
 
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
-            var config = ModContent.GetInstance<DDRConfig>();
+            var config = ModContent.GetInstance<DDRConfigVanilla>();
             if (config == null) return;
             if (!BossFightTracker.NpcTypeToFightKey.TryGetValue(npc.type, out string key)) return;
             if (!IsBossSelected(key, config)) return;
@@ -47,7 +47,7 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
             // 只保护致死 NPC；非致死部位允许自然死亡（脚本触发、相位切换等）
             if (!BossFightTracker.KillNpcTypes.Contains(npc.type)) return true;
 
-            var config = ModContent.GetInstance<DDRConfig>();
+            var config = ModContent.GetInstance<DDRConfigVanilla>();
             if (config == null || !config.EnableDamageReduction) return true;
             if (!BossFightTracker.NpcTypeToFightKey.TryGetValue(npc.type, out string key)) return true;
             if (!IsBossSelected(key, config)) return true;
@@ -69,7 +69,7 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
 
         private static void ApplyReduction(NPC npc, ref NPC.HitModifiers modifiers)
         {
-            var config = ModContent.GetInstance<DDRConfig>();
+            var config = ModContent.GetInstance<DDRConfigVanilla>();
             if (config == null || !config.EnableDamageReduction) return;
             if (!BossFightTracker.NpcTypeToFightKey.TryGetValue(npc.type, out string key)) return;
             if (!IsBossSelected(key, config)) return;
@@ -109,7 +109,7 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
             // Phase 2 中的非致死部位（若仍存活）：仅受 SmoothedN 软约束，无硬地板
         }
 
-        private static bool IsBossSelected(string key, DDRConfig cfg)
+        private static bool IsBossSelected(string key, DDRConfigVanilla cfg)
         {
             // ── 原版 Boss ─────────────────────────────────────────────
             bool vanilla = key switch
@@ -175,10 +175,10 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
 
             // ── Fargo's Souls Mod Boss ───────────────────────────────
             var fargo = ModContent.GetInstance<DDRConfigFargo>();
-            if (fargo == null) return false;
-
-            return key switch
+            if (fargo != null)
             {
+                bool fargoResult = key switch
+                {
                 "TrojanSquirrel"  => fargo.TrojanSquirrel,
                 "BanishedBaron"   => fargo.BanishedBaron,
                 "DeviBoss"        => fargo.DeviBoss,
@@ -194,8 +194,33 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
                 "SpiritChampion"  => fargo.SpiritChampion,
                 "TerraChampion"   => fargo.TerraChampion,
                 "TimberChampion"  => fargo.TimberChampion,
-                "WillChampion"    => fargo.WillChampion,
-                _                 => false,
+                    "WillChampion"    => fargo.WillChampion,
+                    _                 => false,
+                };
+                if (fargoResult) return true;
+            }
+
+            // ── Thorium Mod Boss ─────────────────────────────────────
+            var thorium = ModContent.GetInstance<DDRConfigThorium>();
+            if (thorium == null) return false;
+
+            return key switch
+            {
+                "Viscount"             => thorium.Viscount,
+                "GraniteEnergyStorm"   => thorium.GraniteEnergyStorm,
+                "Illusionist"          => thorium.Illusionist,
+                "PatchWerk"            => thorium.PatchWerk,
+                "QueenJellyfish"       => thorium.QueenJellyfish,
+                "TheGrandThunderBird"  => thorium.TheGrandThunderBird,
+                "BoreanStrider"        => thorium.BoreanStrider,
+                "FallenBeholder"       => thorium.FallenBeholder,
+                "BuriedChampion"       => thorium.BuriedChampion,
+                "CorpseBloom"          => thorium.CorpseBloom,
+                "Lich"                 => thorium.Lich,
+                "StarScouter"          => thorium.StarScouter,
+                "ForgottenOne"         => thorium.ForgottenOne,
+                "ThePrimordials"       => thorium.ThePrimordials,
+                _                      => false,
             };
         }
     }

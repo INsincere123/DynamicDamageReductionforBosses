@@ -3,7 +3,7 @@ using Terraria.ModLoader.Config;
 
 namespace DynamicDamageReductionforBosses.Config
 {
-    public class DDRConfig : ModConfig
+    public class DDRConfigVanilla : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ClientSide;
 

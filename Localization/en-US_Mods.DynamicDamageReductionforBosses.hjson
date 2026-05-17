@@ -1,6 +1,6 @@
 Configs: {
-	DDRConfig: {
-		DisplayName: Vanilla Bosses
+	DDRConfigVanilla: {
+		DisplayName: ① Vanilla Bosses
 
 		Headers: {
 			General: General
@@ -135,7 +135,7 @@ Configs: {
 	}
 
 	DDRConfigCalamity: {
-		DisplayName: Calamity Bosses
+		DisplayName: ② Calamity Bosses
 
 		Headers: {
 			PreHardmode: Pre-Hardmode
@@ -274,8 +274,88 @@ Configs: {
 		}
 	}
 
+	DDRConfigThorium: {
+		DisplayName: ④ Thorium Mod Bosses
+
+		Headers: {
+			PreHardmode: Pre-Hardmode
+			Hardmode: Hardmode
+			MiniBoss: Mini Bosses
+		}
+
+		TheGrandThunderBird: {
+			Label: The Grand Thunder Bird
+			Tooltip: ""
+		}
+
+		QueenJellyfish: {
+			Label: Queen Jellyfish
+			Tooltip: ""
+		}
+
+		Viscount: {
+			Label: Viscount
+			Tooltip: ""
+		}
+
+		GraniteEnergyStorm: {
+			Label: Granite Energy Storm
+			Tooltip: ""
+		}
+
+		BuriedChampion: {
+			Label: Buried Champion
+			Tooltip: ""
+		}
+
+		StarScouter: {
+			Label: Star Scouter
+			Tooltip: ""
+		}
+
+		BoreanStrider: {
+			Label: Borean Strider
+			Tooltip: ""
+		}
+
+		FallenBeholder: {
+			Label: Fallen Beholder
+			Tooltip: ""
+		}
+
+		Lich: {
+			Label: Lich
+			Tooltip: ""
+		}
+
+		ForgottenOne: {
+			Label: The Forgotten One
+			Tooltip: ""
+		}
+
+		ThePrimordials: {
+			Label: The Primordials
+			Tooltip: ""
+		}
+
+		PatchWerk: {
+			Label: Patch Werk
+			Tooltip: ""
+		}
+
+		CorpseBloom: {
+			Label: Corpse Bloom
+			Tooltip: ""
+		}
+
+		Illusionist: {
+			Label: Illusionist
+			Tooltip: ""
+		}
+	}
+
 	DDRConfigFargo: {
-		DisplayName: Fargo's Souls Bosses
+		DisplayName: ③ Fargo's Souls Bosses
 
 		Headers: {
 			Bosses: Bosses
