@@ -350,7 +350,8 @@ namespace DynamicDamageReductionforBosses.Systems
             TryAdd("Anahita",                  "Leviathan");
             TryAdd("AstrumAureus",             "AstrumAureus");
             TryAdd("PlaguebringerGoliath",     "PlaguebringerGoliath");
-            TryAdd("RavagerHead",              "Ravager");
+            TryAdd("RavagerBody",              "Ravager");  // 本体是致死 NPC
+            TryAdd("RavagerHead",              "Ravager");  // 可摧毁的头，非致死部位
             TryAdd("AstrumDeusHead",           "AstrumDeus");
             TryAdd("AstrumDeusBody",           "AstrumDeus");
             TryAdd("AstrumDeusTail",           "AstrumDeus");
@@ -401,12 +402,10 @@ namespace DynamicDamageReductionforBosses.Systems
             TryAddKill("Anahita");
             TryAddKill("AstrumAureus");
             TryAddKill("PlaguebringerGoliath");
-            TryAddKill("RavagerHead");
+            TryAddKill("RavagerBody");
             TryAddKill("AstrumDeusHead");
             // 月亮领主后
-            TryAddKill("ProfanedGuardianCommander");
-            TryAddKill("ProfanedGuardianDefender");
-            TryAddKill("ProfanedGuardianHealer");
+            TryAddKill("ProfanedGuardianCommander"); // 只有指挥官是致死 NPC；护卫和治愈者可自然死亡
             TryAddKill("Dragonfolly");
             TryAddKill("Providence");
             TryAddKill("StormWeaverHead");
