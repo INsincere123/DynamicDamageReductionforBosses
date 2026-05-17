@@ -5,4 +5,4 @@ homepage = https://github.com/INsincere123/DynamicDamageReductionforBosses
 
 weakReferences = CalamityMod, FargowiltasSouls, ThoriumMod
 
-buildIgnore = *.csproj, *.user, *.sln, *.md, obj\*, bin\*, .vs\*, .git\*, .claude\*, .code-workspace, Properties\*, tree.txt, tree.bat, tree.py, .gitignore
+buildIgnore = *.csproj, *.user, *.sln, *.md, obj\*, bin\*, .vs\*, .git\*, .claude\*, .code-workspace, Properties\*, tree.txt, tree.bat, tree.py, .gitignore, CLAUDE.md
