@@ -288,77 +288,77 @@ Configs: {
 		}
 
 		BanishedBaron: {
-			Label: 流放男爵
+			Label: 放逐遗爵
 			Tooltip: ""
 		}
 
 		DeviBoss: {
-			Label: 恶魔
+			Label: 戴薇安（Boss）
 			Tooltip: ""
 		}
 
 		CursedCoffin: {
-			Label: 诅咒棺材
+			Label: 咒缚灵棺
 			Tooltip: ""
 		}
 
 		AbomBoss: {
-			Label: 憎恶
+			Label: 憎恶（Boss）
 			Tooltip: ""
 		}
 
 		LifeChallenger: {
-			Label: 生命挑战者
+			Label: 飘渺游光
 			Tooltip: ""
 		}
 
 		MutantBoss: {
-			Label: 突变体
+			Label: 突变体（Boss）
 			Tooltip: ""
 		}
 
 		CosmosChampion: {
-			Label: 宇宙冠军
+			Label: 厄里达诺斯，宇宙英灵
 			Tooltip: ""
 		}
 
 		EarthChampion: {
-			Label: 大地冠军
+			Label: 大地英灵
 			Tooltip: ""
 		}
 
 		LifeChampion: {
-			Label: 生命冠军
+			Label: 生命英灵
 			Tooltip: ""
 		}
 
 		NatureChampion: {
-			Label: 自然冠军
+			Label: 自然英灵
 			Tooltip: ""
 		}
 
 		ShadowChampion: {
-			Label: 暗影冠军
+			Label: 死亡英灵
 			Tooltip: ""
 		}
 
 		SpiritChampion: {
-			Label: 灵魂冠军
+			Label: 心灵英灵
 			Tooltip: ""
 		}
 
 		TerraChampion: {
-			Label: 泰拉冠军
+			Label: 泰拉英灵
 			Tooltip: ""
 		}
 
 		TimberChampion: {
-			Label: 木材冠军
+			Label: 森林英灵
 			Tooltip: ""
 		}
 
 		WillChampion: {
-			Label: 意志冠军
+			Label: 意志英灵
 			Tooltip: ""
 		}
 	}
