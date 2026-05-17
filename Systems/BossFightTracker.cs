@@ -179,7 +179,7 @@ namespace DynamicDamageReductionforBosses.Systems
         {
             if (ActiveFights.Count == 0) return;
 
-            var config = ModContent.GetInstance<DDRConfig>();
+            var config = ModContent.GetInstance<DDRConfigVanilla>();
             var toRemove = new List<string>();
             const float dt = 1f / 60f;
 
@@ -270,7 +270,7 @@ namespace DynamicDamageReductionforBosses.Systems
                 ActiveFights.Remove(key);
         }
 
-        private static void UpdateSmoothedN(ref float smoothedN, float h, float q, DDRConfig config, float dt)
+        private static void UpdateSmoothedN(ref float smoothedN, float h, float q, DDRConfigVanilla config, float dt)
         {
             float deficit    = q > 0f ? Math.Max(0f, (q - h) / q) : 0f;
             float timeFactor = 0.35f + 0.65f * (1f - q);
@@ -287,6 +287,7 @@ namespace DynamicDamageReductionforBosses.Systems
         {
             RegisterCalamityBosses();
             RegisterFargoBosses();
+            RegisterThoriumBosses();
         }
 
         /// <summary>
@@ -483,6 +484,122 @@ namespace DynamicDamageReductionforBosses.Systems
 
             TryAdd("WillChampion",        "WillChampion");
             TryAddKill("WillChampion");
+        }
+
+        /// <summary>
+        /// 在 PostSetupContent 里动态注册 Thorium Mod Boss 的 NPC 类型映射。
+        /// </summary>
+        private static void RegisterThoriumBosses()
+        {
+            if (!ModLoader.TryGetMod("ThoriumMod", out _)) return;
+
+            void TryAdd(string className, string key)
+            {
+                if (ModContent.TryFind<ModNPC>($"ThoriumMod/{className}", out var npc))
+                    NpcTypeToFightKey[npc.Type] = key;
+            }
+
+            void TryAddKill(string className)
+            {
+                if (ModContent.TryFind<ModNPC>($"ThoriumMod/{className}", out var npc))
+                    KillNpcTypes.Add(npc.Type);
+            }
+
+            // ── 困难模式前 ───────────────────────────────────────────
+            TryAdd("Viscount",               "Viscount");
+            TryAdd("BiteyBaby",              "Viscount");
+            TryAddKill("Viscount");
+
+            TryAdd("GraniteEnergyStorm",     "GraniteEnergyStorm");
+            TryAdd("CoalescedEnergy",        "GraniteEnergyStorm");
+            TryAdd("EncroachingEnergy",      "GraniteEnergyStorm");
+            TryAdd("EnergyBarrier",          "GraniteEnergyStorm");
+            TryAdd("EnergyConduit",          "GraniteEnergyStorm");
+            TryAdd("UnstableEnergyAnomaly",  "GraniteEnergyStorm");
+            TryAddKill("GraniteEnergyStorm");
+
+            TryAdd("Illusionist",            "Illusionist");
+            TryAdd("IllusionistDecoy",       "Illusionist");
+            TryAdd("IllusionGlass",          "Illusionist");
+            TryAddKill("Illusionist");                         // IllusionistDecoy 可自然死亡
+
+            TryAdd("PatchWerk",              "PatchWerk");
+            TryAddKill("PatchWerk");
+
+            TryAdd("QueenJellyfish",         "QueenJellyfish");
+            TryAdd("DistractingJellyfish",   "QueenJellyfish");
+            TryAdd("SpittingJellyfish",      "QueenJellyfish");
+            TryAdd("ZealousJellyfish",       "QueenJellyfish");
+            TryAddKill("QueenJellyfish");
+
+            TryAdd("TheGrandThunderBird",    "TheGrandThunderBird");
+            TryAdd("StormHatchling",         "TheGrandThunderBird");
+            TryAddKill("TheGrandThunderBird");
+
+            // ── 困难模式 ─────────────────────────────────────────────
+            // BoreanStrider：主体 CheckDead 设 life=1 变形为 Popped，Popped 才是致死 NPC
+            TryAdd("BoreanStrider",          "BoreanStrider");
+            TryAdd("BoreanStriderPopped",    "BoreanStrider");
+            TryAdd("BoreanHopper",           "BoreanStrider");
+            TryAdd("BoreanMyte",             "BoreanStrider");
+            TryAddKill("BoreanStriderPopped");                 // 主体 transforms，不列入
+
+            // FallenBeholder：普通→FallenBeholder 终态，专家→FallenBeholder2 终态
+            TryAdd("FallenBeholder",         "FallenBeholder");
+            TryAdd("FallenBeholder2",        "FallenBeholder");
+            TryAdd("Beholder",               "FallenBeholder");
+            TryAddKill("FallenBeholder");
+            TryAddKill("FallenBeholder2");
+
+            TryAdd("BuriedChampion",         "BuriedChampion");
+            TryAdd("FallenChampion1",        "BuriedChampion");
+            TryAdd("FallenChampion2",        "BuriedChampion");
+            TryAdd("BizarreRockFormation",   "BuriedChampion");
+            TryAdd("MagicalBurst",           "BuriedChampion");
+            TryAddKill("BuriedChampion");
+
+            TryAdd("CorpseBloom",            "CorpseBloom");
+            TryAdd("CorpsePetal",            "CorpseBloom");
+            TryAdd("CorpseWeed",             "CorpseBloom");
+            TryAdd("BurstingMaggot",         "CorpseBloom");
+            TryAdd("FamishedMaggot",         "CorpseBloom");
+            TryAddKill("CorpseBloom");
+
+            // Lich：三相（Lich→LichHeadless→PhylacteryofaThousandSouls），各相 OnKill 均有终结逻辑
+            TryAdd("Lich",                         "Lich");
+            TryAdd("LichHeadless",                 "Lich");
+            TryAdd("PhylacteryofaThousandSouls",   "Lich");
+            TryAddKill("Lich");
+            TryAddKill("LichHeadless");
+            TryAddKill("PhylacteryofaThousandSouls");
+
+            TryAdd("StarScouter",            "StarScouter");
+            TryAdd("BioCore",                "StarScouter");
+            TryAdd("CryoCore",               "StarScouter");
+            TryAdd("PyroCore",               "StarScouter");
+            TryAddKill("StarScouter");
+
+            // ForgottenOne：三相连锁（ForgottenOne→Cracked→Released）
+            // ForgottenOne / ForgottenOneCracked 的 CheckDead 设 life=1 触发下一相，不拦截
+            TryAdd("ForgottenOne",           "ForgottenOne");
+            TryAdd("ForgottenOneCracked",    "ForgottenOne");
+            TryAdd("ForgottenOneReleased",   "ForgottenOne");
+            TryAdd("AbyssalSpawn",           "ForgottenOne");
+            TryAddKill("ForgottenOneReleased");                // 前两相 transforms，只有 Released 是致死 NPC
+
+            // ── 月亮领主后：四原初 ────────────────────────────────────
+            // Aquaius/Omnicide/SlagFury 死亡时 PrimordialBase.OnKill 触发 DreamEater 召唤
+            // DreamEater 是战斗的最终终结者，为唯一致死 NPC
+            TryAdd("Aquaius",                "ThePrimordials");
+            TryAdd("AquaiusBubble",          "ThePrimordials");
+            TryAdd("Omnicide",               "ThePrimordials");
+            TryAdd("SlagFury",               "ThePrimordials");
+            TryAdd("DreamEater",             "ThePrimordials");
+            TryAdd("ImpendingDread",         "ThePrimordials");
+            TryAdd("InnerDespair",           "ThePrimordials");
+            TryAdd("UnstableAnger",          "ThePrimordials");
+            TryAdd("LucidBubble",            "ThePrimordials");
+            TryAddKill("DreamEater");
         }
 
         public override void OnWorldUnload()

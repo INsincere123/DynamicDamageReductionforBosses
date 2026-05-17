@@ -1,6 +1,6 @@
 Configs: {
-	DDRConfig: {
-		DisplayName: 原版Boss
+	DDRConfigVanilla: {
+		DisplayName: ① 原版Boss
 
 		Headers: {
 			General: 基本设置
@@ -35,7 +35,7 @@ Configs: {
 
 		EnableHpMultiplier: {
 			Label: 启用血量倍数
-			Tooltip: 开启后，选中的 Boss 生成时血量乘以指定倍数
+			Tooltip: 开启后，选中的 Boss 生成时血量乘以指定倍数，当你看到伤害跳出很多1时，建议启用
 		}
 
 		HpMultiplier: {
@@ -135,7 +135,7 @@ Configs: {
 	}
 
 	DDRConfigCalamity: {
-		DisplayName: 灾厄Boss
+		DisplayName: ② 灾厄Boss
 
 		Headers: {
 			PreHardmode: 困难模式前
@@ -274,12 +274,92 @@ Configs: {
 		}
 	}
 
+	DDRConfigThorium: {
+		DisplayName: ④ 瑟银Boss
+
+		Headers: {
+			PreHardmode: 困难模式前
+			Hardmode: 困难模式
+			MiniBoss: 迷你 Boss
+		}
+
+		TheGrandThunderBird: {
+			Label: 惊雷王鹰
+			Tooltip: ""
+		}
+
+		QueenJellyfish: {
+			Label: 水母皇后
+			Tooltip: ""
+		}
+
+		Viscount: {
+			Label: 蝙蝠子爵
+			Tooltip: ""
+		}
+
+		GraniteEnergyStorm: {
+			Label: 花岗岩流能风暴
+			Tooltip: ""
+		}
+
+		BuriedChampion: {
+			Label: 英灵遗骸
+			Tooltip: ""
+		}
+
+		StarScouter: {
+			Label: 星际监察者
+			Tooltip: ""
+		}
+
+		BoreanStrider: {
+			Label: 极地遁蛛
+			Tooltip: ""
+		}
+
+		FallenBeholder: {
+			Label: 堕落注视者
+			Tooltip: ""
+		}
+
+		Lich: {
+			Label: 巫妖
+			Tooltip: ""
+		}
+
+		ForgottenOne: {
+			Label: 遗忘之主
+			Tooltip: ""
+		}
+
+		ThePrimordials: {
+			Label: 始生灾灵
+			Tooltip: ""
+		}
+
+		PatchWerk: {
+			Label: 缝合人
+			Tooltip: ""
+		}
+
+		CorpseBloom: {
+			Label: 绝命花
+			Tooltip: ""
+		}
+
+		Illusionist: {
+			Label: 幻术师
+			Tooltip: ""
+		}
+	}
+
 	DDRConfigFargo: {
-		DisplayName: Fargo's Souls Boss
+		DisplayName: ③ 法狗Boss
 
 		Headers: {
 			Bosses: 主线 Boss
-			Champions: 冠军 Boss
+			Champions: 英灵
 		}
 
 		TrojanSquirrel: {
@@ -293,7 +373,7 @@ Configs: {
 		}
 
 		DeviBoss: {
-			Label: 戴薇安（Boss）
+			Label: 戴薇安
 			Tooltip: ""
 		}
 
@@ -303,7 +383,7 @@ Configs: {
 		}
 
 		AbomBoss: {
-			Label: 憎恶（Boss）
+			Label: 憎恶
 			Tooltip: ""
 		}
 
@@ -313,7 +393,7 @@ Configs: {
 		}
 
 		MutantBoss: {
-			Label: 突变体（Boss）
+			Label: 突变体
 			Tooltip: ""
 		}
 
