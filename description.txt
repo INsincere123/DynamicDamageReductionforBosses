@@ -29,3 +29,5 @@ Features:
 · Dynamic damage reduction that feels natural in-game
 · No items required — configure everything in the Mod Config UI
 · Supports Calamity Mod, Fargo's Souls Mod, and Thorium Mod
+新增支持：旅人归途（Homeward Journey）Boss。
+New: Homeward Journey boss support.

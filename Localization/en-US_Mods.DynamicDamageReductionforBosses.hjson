@@ -443,6 +443,91 @@ Configs: {
 		}
 	}
 
+	DDRConfigContinentOfJourney: {
+		DisplayName: ④ Homeward Journey Bosses
+
+		Headers: {
+			PreHardmode: Pre-Hardmode
+			Hardmode: Hardmode
+			PostWallofShadow: Post-Wall of Shadow
+		}
+
+		GoblinChariot: {
+			Label: Goblin Chariot
+			Tooltip: ""
+		}
+
+		BigDipper: {
+			Label: Big Dipper
+			Tooltip: ""
+		}
+
+		PuppetOpera: {
+			Label: Puppet Opera
+			Tooltip: ""
+		}
+
+		MarquisMoonsquid: {
+			Label: Marquis Moonsquid
+			Tooltip: ""
+		}
+
+		PriestessRod: {
+			Label: Priestess Rod
+			Tooltip: ""
+		}
+
+		Diver: {
+			Label: Diver
+			Tooltip: ""
+		}
+
+		TheMotherbrain: {
+			Label: The Motherbrain
+			Tooltip: ""
+		}
+
+		WallofShadow: {
+			Label: Wall of Shadow
+			Tooltip: ""
+		}
+
+		SlimeGod: {
+			Label: Slime God
+			Tooltip: ""
+		}
+
+		TheOverwatcher: {
+			Label: The Overwatcher
+			Tooltip: ""
+		}
+
+		TheLifebringer: {
+			Label: The Lifebringer
+			Tooltip: ""
+		}
+
+		TheMaterealizer: {
+			Label: The Materealizer
+			Tooltip: ""
+		}
+
+		ScarabBelief: {
+			Label: Scarab Belief
+			Tooltip: ""
+		}
+
+		WorldsEndEverlastingFallingWhale: {
+			Label: World's End Everlasting Falling Whale
+			Tooltip: ""
+		}
+
+		TheSon: {
+			Label: The Son
+			Tooltip: ""
+		}
+	}
+
 	DDRConfigCustom: {
 		DisplayName: ⑤ Custom Bosses
 

@@ -30,9 +30,10 @@
 [*] [b]灾厄 Mod[/b]（Calamity Mod）— 全部 Boss
 [*] [b]法狗魂石[/b]（FargowiltasSouls）— 主线 Boss + 9 位英灵
 [*] [b]瑟银 Mod[/b]（Thorium Mod）— 全部 Boss 含迷你 Boss
+[*] [b]旅人归途[/b]（Homeward Journey）— Boss 支持
 [*] [b]自定义 Boss[/b] — 手动填写模组内部名和 NPC 类名，即可让任意模组的 Boss 生效
 [/list]
-灾厄、Fargo、瑟银均为[b]可选依赖[/b]，未安装时对应配置项自动无效。自定义功能进入世界时会在聊天框提示每条记录的注册结果。
+灾厄、Fargo、瑟银、旅人归途均为[b]可选依赖[/b]，未安装时对应配置项自动无效。自定义功能进入世界时会在聊天框提示每条记录的注册结果。
 
 [h3]注意事项[/h3]
 [list]
@@ -70,9 +71,10 @@ High-DPS weapons are nearly impossible to test on early bosses — they just die
 [*] [b]Calamity Mod[/b] — full boss roster
 [*] [b]Fargo's Souls Mod[/b] — main bosses + 9 champions
 [*] [b]Thorium Mod[/b] — all bosses including mini-bosses
+[*] [b]Homeward Journey[/b] — boss support
 [*] [b]Custom bosses[/b] — enter any mod's internal name and NPC class name to add bosses from mods not listed above
 [/list]
-The three companion mods are [b]optional[/b]. If not installed, their config entries simply have no effect. Custom entries show a per-entry success/failure message in chat when you enter a world.
+The companion mods are [b]optional[/b]. If not installed, their config entries simply have no effect. Custom entries show a per-entry success/failure message in chat when you enter a world.
 
 [h3]Notes[/h3]
 [list]

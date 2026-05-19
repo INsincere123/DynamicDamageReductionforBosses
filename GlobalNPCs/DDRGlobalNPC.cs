@@ -18,7 +18,13 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
             if (!BossFightTracker.NpcTypeToFightKey.TryGetValue(npc.type, out string key)) return;
             if (!IsBossSelected(key, config)) return;
 
-            if (config.EnableHpMultiplier)
+            var behavior = BossFightTracker.GetFightBehavior(key);
+
+            bool canApplyHpMultiplier = behavior.AllowHpMultiplier &&
+                (behavior.ProtectionMode == BossFightTracker.BossProtectionMode.Normal ||
+                 BossFightTracker.KillNpcTypes.Contains(npc.type));
+
+            if (config.EnableHpMultiplier && canApplyHpMultiplier)
             {
                 int multiplier = Math.Max(1, Math.Min(2000, config.HpMultiplier));
                 if (multiplier > 1)
@@ -51,6 +57,9 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
             if (config == null || !config.EnableDamageReduction) return true;
             if (!BossFightTracker.NpcTypeToFightKey.TryGetValue(npc.type, out string key)) return true;
             if (!IsBossSelected(key, config)) return true;
+
+            var behavior = BossFightTracker.GetFightBehavior(key);
+            if (behavior.ProtectionMode == BossFightTracker.BossProtectionMode.ScriptedDeath) return true;
 
             var state = BossFightTracker.GetFightState(npc);
             if (state == null || !state.InitialHP.TryGetValue(npc.whoAmI, out int initialHP)) return true;
@@ -91,22 +100,48 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
                 // 致死 NPC 硬地板：全局 T2/T1，保证不早于 T1 死亡
                 if (state.InitialHP.TryGetValue(npc.whoAmI, out int killInitHP) && killInitHP > 0)
                 {
-                    float hFloor = killInitHP * Math.Max(1f - t2 / t1, 0f);
+                    float hFloor = GetAdjustedFloor(npc, killInitHP, key, t2, t1);
                     modifiers.SetMaxDamage(Math.Max(1, npc.life - (int)hFloor));
                 }
             }
-            else if (state.HasNonKillParts && state.Phase2StartTick < 0)
+            else if (state.HasNonKillParts && state.Phase2StartTick < 0 &&
+                     BossFightTracker.GetFightBehavior(key).ProtectNonKillParts)
             {
                 // 非致死部位硬地板：仅在 Phase 1 期间，使用 α×T1 时间预算
                 float T_phase1 = config.PhaseRatio * t1;
                 if (T_phase1 > 0 &&
                     state.InitialHP.TryGetValue(npc.whoAmI, out int partInitHP) && partInitHP > 0)
                 {
-                    float hFloor = partInitHP * Math.Max(1f - t2 / T_phase1, 0f);
+                    float hFloor = GetAdjustedFloor(npc, partInitHP, key, t2, T_phase1);
                     modifiers.SetMaxDamage(Math.Max(1, npc.life - (int)hFloor));
                 }
             }
             // Phase 2 中的非致死部位（若仍存活）：仅受 SmoothedN 软约束，无硬地板
+        }
+
+        private static float GetAdjustedFloor(NPC npc, int initialHP, string key, float elapsed, float duration)
+        {
+            float floor = initialHP * Math.Max(1f - elapsed / duration, 0f);
+            var behavior = BossFightTracker.GetFightBehavior(key);
+            if (behavior.ProtectionMode == BossFightTracker.BossProtectionMode.Normal ||
+                behavior.PhaseThresholds.Length == 0)
+            {
+                return floor;
+            }
+
+            float currentRatio = initialHP > 0 ? (float)npc.life / initialHP : 0f;
+            float nextThreshold = 0f;
+            foreach (float threshold in behavior.PhaseThresholds)
+            {
+                if (threshold <= 0f || threshold >= 1f) continue;
+                if (currentRatio > threshold && threshold > nextThreshold)
+                    nextThreshold = threshold;
+            }
+
+            if (nextThreshold > 0f && floor / initialHP > nextThreshold)
+                floor = Math.Min(floor, Math.Max(1f, initialHP * nextThreshold - 1f));
+
+            return floor;
         }
 
         private static bool IsBossSelected(string key, DDRConfigVanilla cfg)
@@ -198,6 +233,32 @@ namespace DynamicDamageReductionforBosses.GlobalNPCs
                     _                 => false,
                 };
                 if (fargoResult) return true;
+            }
+
+            // ── Homeward Journey Boss ─────────────────────────────
+            var coj = ModContent.GetInstance<DDRConfigContinentOfJourney>();
+            if (coj != null)
+            {
+                bool cojResult = key switch
+                {
+                    "CoJGoblinChariot"                    => coj.GoblinChariot,
+                    "CoJBigDipper"                        => coj.BigDipper,
+                    "CoJPuppetOpera"                      => coj.PuppetOpera,
+                    "CoJMarquisMoonsquid"                 => coj.MarquisMoonsquid,
+                    "CoJPriestessRod"                     => coj.PriestessRod,
+                    "CoJDiver"                            => coj.Diver,
+                    "CoJTheMotherbrain"                   => coj.TheMotherbrain,
+                    "CoJWallofShadow"                     => coj.WallofShadow,
+                    "CoJSlimeGod"                         => coj.SlimeGod,
+                    "CoJTheOverwatcher"                   => coj.TheOverwatcher,
+                    "CoJTheLifebringer"                   => coj.TheLifebringer,
+                    "CoJTheMaterealizer"                  => coj.TheMaterealizer,
+                    "CoJScarabBelief"                     => coj.ScarabBelief,
+                    "CoJWorldsEndEverlastingFallingWhale" => coj.WorldsEndEverlastingFallingWhale,
+                    "CoJTheSon"                           => coj.TheSon,
+                    _                                     => false,
+                };
+                if (cojResult) return true;
             }
 
             // ── 自定义 Boss ──────────────────────────────────────────────

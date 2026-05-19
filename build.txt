@@ -1,8 +1,8 @@
 displayName = BOSS动态减伤 / Dynamic Boss DR
 author = Zelda
-version = 1.1.1
+version = 1.2.1
 homepage = https://github.com/INsincere123/DynamicDamageReductionforBosses
 hideCode = true
-weakReferences = CalamityMod, FargowiltasSouls, ThoriumMod
+weakReferences = CalamityMod, FargowiltasSouls, ThoriumMod, ContinentOfJourney
 
 buildIgnore = *.csproj, *.user, *.sln, *.md, obj\*, bin\*, .vs\*, .git\*, .claude\*, .code-workspace, Properties\*, tree.txt, tree.bat, tree.py, .gitignore

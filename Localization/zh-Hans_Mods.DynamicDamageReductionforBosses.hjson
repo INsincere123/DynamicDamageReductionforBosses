@@ -443,6 +443,91 @@ Configs: {
 		}
 	}
 
+	DDRConfigContinentOfJourney: {
+		DisplayName: ④ 旅人归途Boss
+
+		Headers: {
+			PreHardmode: 困难模式之前
+			Hardmode: 困难模式
+			PostWallofShadow: 暗影墙后
+		}
+
+		GoblinChariot: {
+			Label: 哥布林战车
+			Tooltip: ""
+		}
+
+		BigDipper: {
+			Label: 大熊星座
+			Tooltip: ""
+		}
+
+		PuppetOpera: {
+			Label: 木偶歌剧
+			Tooltip: ""
+		}
+
+		MarquisMoonsquid: {
+			Label: 月光鱿侯
+			Tooltip: ""
+		}
+
+		PriestessRod: {
+			Label: 天竿鱼祭司
+			Tooltip: ""
+		}
+
+		Diver: {
+			Label: 深潜者
+			Tooltip: ""
+		}
+
+		TheMotherbrain: {
+			Label: 母脑
+			Tooltip: ""
+		}
+
+		WallofShadow: {
+			Label: 暗影墙
+			Tooltip: ""
+		}
+
+		SlimeGod: {
+			Label: 史莱姆之神
+			Tooltip: ""
+		}
+
+		TheOverwatcher: {
+			Label: 极视终表
+			Tooltip: ""
+		}
+
+		TheLifebringer: {
+			Label: 万籁携生
+			Tooltip: ""
+		}
+
+		TheMaterealizer: {
+			Label: 化物天匠
+			Tooltip: ""
+		}
+
+		ScarabBelief: {
+			Label: 圣甲虫信仰
+			Tooltip: ""
+		}
+
+		WorldsEndEverlastingFallingWhale: {
+			Label: 世末·永落鲸
+			Tooltip: ""
+		}
+
+		TheSon: {
+			Label: 圣子
+			Tooltip: ""
+		}
+	}
+
 	DDRConfigCustom: {
 		DisplayName: ⑤ 自定义Boss
 

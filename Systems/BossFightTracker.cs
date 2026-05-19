@@ -95,6 +95,51 @@ namespace DynamicDamageReductionforBosses.Systems
             NPCID.MoonLordCore,        // 月亮领主核心；手/头由脚本触发死亡，不拦截
         };
 
+        public enum BossProtectionMode
+        {
+            Normal,
+            PhaseFriendly,
+            ScriptedDeath,
+        }
+
+        public sealed class BossFightBehavior
+        {
+            public BossProtectionMode ProtectionMode { get; init; } = BossProtectionMode.Normal;
+            public float[] PhaseThresholds { get; init; } = Array.Empty<float>();
+            public bool AllowHpMultiplier { get; init; } = true;
+            public bool ProtectNonKillParts { get; init; } = true;
+        }
+
+        public static readonly Dictionary<string, BossFightBehavior> FightBehaviors = new();
+
+        public static BossFightBehavior GetFightBehavior(string key)
+        {
+            return FightBehaviors.TryGetValue(key, out var behavior)
+                ? behavior
+                : new BossFightBehavior();
+        }
+
+        private static void SetFightBehavior(string key, BossProtectionMode mode, bool allowHpMultiplier = true, params float[] thresholds)
+        {
+            FightBehaviors[key] = new BossFightBehavior
+            {
+                ProtectionMode = mode,
+                AllowHpMultiplier = allowHpMultiplier,
+                PhaseThresholds = thresholds ?? Array.Empty<float>(),
+            };
+        }
+
+        private static void SetFightBehavior(string key, BossProtectionMode mode, bool allowHpMultiplier, bool protectNonKillParts, params float[] thresholds)
+        {
+            FightBehaviors[key] = new BossFightBehavior
+            {
+                ProtectionMode = mode,
+                AllowHpMultiplier = allowHpMultiplier,
+                ProtectNonKillParts = protectNonKillParts,
+                PhaseThresholds = thresholds ?? Array.Empty<float>(),
+            };
+        }
+
         // ── NPC 类型 → 战斗 Key 映射 ─────────────────────────────────
 
         public static readonly Dictionary<int, string> NpcTypeToFightKey = new()
@@ -304,6 +349,7 @@ namespace DynamicDamageReductionforBosses.Systems
             RegisterCalamityBosses();
             RegisterFargoBosses();
             RegisterThoriumBosses();
+            RegisterContinentOfJourneyBosses();
             IsInitialized = true;
             RegisterCustomBosses(ModContent.GetInstance<DDRConfigCustom>());
         }
@@ -617,6 +663,125 @@ namespace DynamicDamageReductionforBosses.Systems
             TryAdd("UnstableAnger",          "ThePrimordials");
             TryAdd("LucidBubble",            "ThePrimordials");
             TryAddKill("DreamEater");
+        }
+
+        /// <summary>
+        /// Dynamically registers Homeward Journey bosses.
+        /// </summary>
+        private static void RegisterContinentOfJourneyBosses()
+        {
+            if (!ModLoader.TryGetMod("ContinentOfJourney", out _)) return;
+
+            void TryAdd(string className, string key)
+            {
+                if (ModContent.TryFind<ModNPC>($"ContinentOfJourney/{className}", out var npc))
+                    NpcTypeToFightKey[npc.Type] = key;
+            }
+
+            void TryAddKill(string className)
+            {
+                if (ModContent.TryFind<ModNPC>($"ContinentOfJourney/{className}", out var npc))
+                    KillNpcTypes.Add(npc.Type);
+            }
+
+            // Pre-Hardmode
+            TryAdd("GoblinChariot", "CoJGoblinChariot");
+            TryAddKill("GoblinChariot");
+
+            TryAdd("BigDipper", "CoJBigDipper");
+            TryAddKill("BigDipper");
+
+            TryAdd("PuppetOpera", "CoJPuppetOpera");
+            TryAdd("BoardOfFlesh", "CoJPuppetOpera");
+            TryAdd("BoardOfFlower", "CoJPuppetOpera");
+            TryAdd("Playwright", "CoJPuppetOpera");
+            TryAddKill("PuppetOpera");
+            SetFightBehavior("CoJPuppetOpera", BossProtectionMode.PhaseFriendly, true, false, 0.66f, 0.33f, 0.1f);
+
+            TryAdd("MarquisMoonsquid", "CoJMarquisMoonsquid");
+            TryAddKill("MarquisMoonsquid");
+
+            // Hardmode
+            TryAdd("PriestessRod", "CoJPriestessRod");
+            TryAddKill("PriestessRod");
+
+            TryAdd("Diver", "CoJDiver");
+            TryAddKill("Diver");
+
+            TryAdd("TheMotherbrain", "CoJTheMotherbrain");
+            TryAdd("TheMotherbrain_Minion", "CoJTheMotherbrain");
+            TryAddKill("TheMotherbrain");
+            SetFightBehavior("CoJTheMotherbrain", BossProtectionMode.PhaseFriendly, true, false, 0.66f, 0.33f);
+
+            TryAdd("WallofShadow", "CoJWallofShadow");
+            TryAdd("WallofShadow_Minion", "CoJWallofShadow");
+            TryAddKill("WallofShadow");
+            SetFightBehavior("CoJWallofShadow", BossProtectionMode.ScriptedDeath, true, false, 0.5f);
+
+            // Post-Wall of Shadow
+            TryAdd("SlimeGod", "CoJSlimeGod");
+            TryAdd("SlimeMercury", "CoJSlimeGod");
+            TryAdd("SlimeVenus", "CoJSlimeGod");
+            TryAdd("SlimeTerra", "CoJSlimeGod");
+            TryAdd("SlimeMars", "CoJSlimeGod");
+            TryAdd("SlimeJupiter", "CoJSlimeGod");
+            TryAdd("SlimeSaturn", "CoJSlimeGod");
+            TryAdd("SlimeUranus", "CoJSlimeGod");
+            TryAdd("SlimeNeptune", "CoJSlimeGod");
+            TryAdd("SlimePluto", "CoJSlimeGod");
+            TryAddKill("SlimeGod");
+            SetFightBehavior("CoJSlimeGod", BossProtectionMode.PhaseFriendly, true, false, 7f / 9f, 5f / 9f, 3f / 9f, 0.5f);
+
+            TryAdd("TheOverwatcher", "CoJTheOverwatcher");
+            TryAdd("TheOverwatcher_Minion", "CoJTheOverwatcher");
+            TryAdd("SpiritOfPast", "CoJTheOverwatcher");
+            TryAdd("SpiritOfPresent", "CoJTheOverwatcher");
+            TryAdd("SpiritOfYetToCome", "CoJTheOverwatcher");
+            TryAddKill("TheOverwatcher");
+            SetFightBehavior("CoJTheOverwatcher", BossProtectionMode.PhaseFriendly, true, false, 0.66f, 0.5f, 0.33f);
+
+            TryAdd("TheLifebringerHead", "CoJTheLifebringer");
+            TryAdd("TheLifebringerBody", "CoJTheLifebringer");
+            TryAdd("TheLifebringerTail", "CoJTheLifebringer");
+            TryAdd("PillarOfMercy", "CoJTheLifebringer");
+            TryAdd("PillarOfMildness", "CoJTheLifebringer");
+            TryAdd("PillarOfSeverity", "CoJTheLifebringer");
+            TryAdd("Sephirah", "CoJTheLifebringer");
+            TryAddKill("TheLifebringerHead");
+            SetFightBehavior("CoJTheLifebringer", BossProtectionMode.PhaseFriendly, false, false, 0.66f, 0.33f);
+
+            TryAdd("TheMaterealizer", "CoJTheMaterealizer");
+            TryAdd("Hydrologem", "CoJTheMaterealizer");
+            TryAdd("Pyrologem", "CoJTheMaterealizer");
+            TryAdd("Aerologem", "CoJTheMaterealizer");
+            TryAdd("Terrologem", "CoJTheMaterealizer");
+            TryAdd("Cosmologem", "CoJTheMaterealizer");
+            TryAdd("Umbrologem", "CoJTheMaterealizer");
+            TryAddKill("TheMaterealizer");
+            SetFightBehavior("CoJTheMaterealizer", BossProtectionMode.PhaseFriendly, true, false, 0.66f, 0.33f);
+
+            TryAdd("ScarabBelief", "CoJScarabBelief");
+            TryAdd("ScarabBelief_Minion", "CoJScarabBelief");
+            TryAddKill("ScarabBelief");
+            SetFightBehavior("CoJScarabBelief", BossProtectionMode.PhaseFriendly, true, 0.5f);
+
+            TryAdd("WorldsEndEverlastingFallingWhale", "CoJWorldsEndEverlastingFallingWhale");
+            TryAdd("PhantomOfDeath_1", "CoJWorldsEndEverlastingFallingWhale");
+            TryAdd("PhantomOfDeath_2", "CoJWorldsEndEverlastingFallingWhale");
+            TryAdd("Mammoth", "CoJWorldsEndEverlastingFallingWhale");
+            TryAdd("Griffin", "CoJWorldsEndEverlastingFallingWhale");
+            TryAdd("AtlasMoth", "CoJWorldsEndEverlastingFallingWhale");
+            TryAdd("Turtle", "CoJWorldsEndEverlastingFallingWhale");
+            TryAdd("Python_Head", "CoJWorldsEndEverlastingFallingWhale");
+            TryAdd("Python_Body", "CoJWorldsEndEverlastingFallingWhale");
+            TryAdd("Loong_Head", "CoJWorldsEndEverlastingFallingWhale");
+            TryAdd("Loong_Body", "CoJWorldsEndEverlastingFallingWhale");
+            TryAddKill("WorldsEndEverlastingFallingWhale");
+            SetFightBehavior("CoJWorldsEndEverlastingFallingWhale", BossProtectionMode.ScriptedDeath, true, false, 0.5f);
+
+            TryAdd("TheSon", "CoJTheSon");
+            TryAddKill("TheSon");
+            SetFightBehavior("CoJTheSon", BossProtectionMode.ScriptedDeath, true, 0.5f);
         }
 
         /// <summary>

@@ -41,19 +41,20 @@
 | ② 灾厄 Boss | Calamity Mod 全部 Boss |
 | ③ Fargo's Souls | Fargo's Souls Mod 主线 Boss + 9 位英灵 |
 | ④ 瑟银 Mod | Thorium Mod 全部 Boss（含迷你 Boss） |
-| ⑤ 自定义 Boss | 手动填写，支持任意模组 |
+| ⑤ 旅人归途 Boss | Homeward Journey Boss |
+| ⑥ 自定义 Boss | 手动填写，支持任意模组 |
 
-②③④ 为可选依赖，未安装时对应配置项自动无效。
+②③④⑤ 为可选依赖，未安装时对应配置项自动无效。
 
 ### 自定义 Boss
 
-对于上表未覆盖的模组，可在 **⑤ 自定义 Boss** 页手动添加条目：
+对于上表未覆盖的模组，可在 **⑥ 自定义 Boss** 页手动添加条目：
 
 | 字段 | 说明 | 示例 |
 |------|------|------|
-| 模组内部名 | 模组的技术名称（非显示名） | `ExampleMod` |
-| NPC 类名 | Boss NPC 的 C# 类名 | `ExampleBoss` |
-| 分组名 | 多段 Boss 的共享计时器标识，单体留空 | `ExampleBoss` |
+| 模组内部名 | 模组的技术名称（非显示名） | `CalamityMod` |
+| NPC 类名 | Boss NPC 的 C# 类名 | `SupremeCalamitas` |
+| 分组名 | 多段 Boss 的共享计时器标识，单体留空 |  |
 | 致死 NPC | 勾选 = 受硬地板保护；不勾 = 只受软减伤（适用于手/臂等附属部位） | ✓ |
 
 进入世界时，聊天框会打印每条记录的注册结果（✓ 成功 / ✗ 失败及原因）。在游戏中修改设置保存后也会立即重新注册并打印结果。
@@ -115,19 +116,20 @@ For **mod developers and weapon testers**: high-DPS weapons are nearly impossibl
 | ② Calamity Bosses | Full Calamity Mod boss roster |
 | ③ Fargo's Souls | Fargo's Souls Mod main bosses + 9 champions |
 | ④ Thorium Mod | All Thorium bosses including mini-bosses |
-| ⑤ Custom Bosses | Any mod — fill in manually |
+| ⑤ Homeward Journey Bosses | Homeward Journey boss roster |
+| ⑥ Custom Bosses | Any mod — fill in manually |
 
-②③④ are optional. If not installed, their config entries have no effect.
+②③④⑤ are optional. If not installed, their config entries have no effect.
 
 ### Custom bosses
 
-For mods not listed above, use the **⑤ Custom Bosses** config page to add entries manually:
+For mods not listed above, use the **⑥ Custom Bosses** config page to add entries manually:
 
 | Field | Description | Example |
 |-------|-------------|---------|
-| Mod Internal Name | The mod's technical name (not its display name) | `ExampleMod` |
-| NPC Class Name | The C# class name of the boss NPC | `ExampleBoss` |
-| Group Key | Shared timer key for multi-part bosses; leave empty for standalone bosses | `ExampleBoss` |
+| Mod Internal Name | The mod's technical name (not its display name) | `CalamityMod` |
+| NPC Class Name | The C# class name of the boss NPC | `SupremeCalamitas` |
+| Group Key | Shared timer key for multi-part bosses; leave empty for standalone bosses |  |
 | Is Kill NPC | Checked = HP floor protection; unchecked = soft reduction only (use for limbs/appendages) | ✓ |
 
 When entering a world, the chat will print a per-entry result (✓ registered / ✗ failed with reason). Saving changes in-game triggers an immediate re-registration and new output.
